@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for swordfighter in swordfighter_list %}
+<div>
+    <h1>{{swordfighter.name}}</h1>
+</div>
+{% endfor %}
+{%endblock%}
