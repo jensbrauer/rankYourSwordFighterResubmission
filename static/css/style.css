@@ -1,12 +1,49 @@
 .card-img-top {
   border: 1px solid black;
+  filter: grayscale(30%);
 }
+
+.card-img-top:hover {
+  filter: grayscale(0%);
+}
+
 .card {
   border: none;
   background-color: black;
   color: white;
-  margin: 2px;
+  margin: 5px;
 }
+
 .container {
   padding-top: 50px;
+}
+
+#fighter-header {
+  border: 1px solid black;
+  border-radius: 2px;
+}
+
+#fighter-header-text {
+  background-color: black;
+  color: white;
+  padding: 16px;
+}
+
+#back-up-link {
+  text-align: center;
+  text-decoration: none;
+  color: grey;
+}
+
+#back-up-link:hover {
+  color: black;
+}
+
+.swordfighter-link, .swordfighter-link:visited {
+  text-decoration: none;
+  color: white;
+}
+.swordfighter-link:hover {
+  text-decoration: none;
+  color:red;
 }

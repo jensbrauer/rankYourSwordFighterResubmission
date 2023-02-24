@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="{% url 'home' %}" id="back-up-link"><h5>< Return to ranking</h5></a>
+<div class="row" id="fighter-header">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <img class="img-fluid" src="{{ character.profile_img.url }}" alt="Card image cap">
+    </div>
+    <div id="fighter-header-text" class="col-sm-6 col-md-6 col-lg-6">
+        <h2>{{character.name}}</h2>
+        <h3>{{character.appears_on}}</h3>
+        <p>{{character.description}}</p>
+    </div>
+</div>
+{%endblock%}

@@ -6,9 +6,13 @@
 {% for swordfighter in swordfighter_list %}
   <div class="col-12 col-md-6 col-lg-4">
     <div class="card"  id="swordfighter-card">
-        <img class="card-img-top" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">{{swordfighter.name}}</h5>
+        <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
+          <img class="card-img-top" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
+        </a>
+          <div class="card-body">
+          <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
+            <h5 class="card-title">{{swordfighter.name}}</h5>
+          </a>
           <p class="card-text"><small class="text-muted">{{swordfighter.appears_on}}</small></p>
           <button>upvote</button>
         </div>
