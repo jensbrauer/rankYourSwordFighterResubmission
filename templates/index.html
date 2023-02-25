@@ -11,13 +11,14 @@
         </a>
           <div class="card-body">
           <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
-            <h5 class="card-title">{{swordfighter.name}}</h5>
+            <h5 class="card-title">#{{forloop.counter}} - {{swordfighter.name}}</h5>
           </a>
           <p class="card-text"><small class="text-muted">{{swordfighter.appears_on}}</small></p>
           <button>upvote</button>
         </div>
     </div>
   </div>
+
 {% endfor %}
 </div>
 {%endblock%}
