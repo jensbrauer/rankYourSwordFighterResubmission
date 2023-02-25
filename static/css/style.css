@@ -15,7 +15,7 @@
 }
 
 .container {
-  padding-top: 50px;
+  padding-top: 60px;
 }
 
 #fighter-header {
@@ -46,4 +46,9 @@
 .swordfighter-link:hover {
   text-decoration: none;
   color:red;
+}
+
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid lightgray;
 }
