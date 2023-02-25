@@ -20,3 +20,4 @@ class swordfighterDetail(View):
                 "character": character
             }
         )
+
