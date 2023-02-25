@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import swordfighter
+from .models import Swordfighter
 
-admin.site.register(swordfighter)
+admin.site.register(Swordfighter)

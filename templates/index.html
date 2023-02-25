@@ -11,10 +11,17 @@
         </a>
           <div class="card-body">
           <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
-            <h5 class="card-title">#{{forloop.counter}} - {{swordfighter.name}}</h5>
+            <h5 class="card-title">#{{forloop.counter}} - {{swordfighter.name}}, {{swordfighter.number_of_upvotes}}</h5>
           </a>
           <p class="card-text"><small class="text-muted">{{swordfighter.appears_on}}</small></p>
-          <button>upvote</button>
+          {% if user.is_authenticated %}
+          <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
+          </form>
+          {% else %}
+          <button>Log in to upvote!</button>
+          {% endif %}
         </div>
     </div>
   </div>

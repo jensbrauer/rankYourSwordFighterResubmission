@@ -1,16 +1,17 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic, View
-from .models import swordfighter
+from django.http import HttpResponseRedirect
+from .models import Swordfighter
 
-class swordfighterList(generic.ListView):
-    model = swordfighter
+class SwordfighterList(generic.ListView):
+    model = Swordfighter
     template_name = 'index.html'
 
 
-class swordfighterDetail(View):
+class SwordfighterDetail(View):
 
     def get(self, request, slug, *args, **kwargs):
-        queryset = swordfighter.objects
+        queryset = Swordfighter.objects
         character = get_object_or_404(queryset, slug=slug)
 
         return render(
@@ -21,3 +22,14 @@ class swordfighterDetail(View):
             }
         )
 
+class SwordfighterUpvote(View):
+
+    def post(self, request, slug):
+        swordfighter = get_object_or_404(Swordfighter, slug=slug)
+
+        if swordfighter.upvotes.filter(id=request.user.id).exists():
+            swordfighter.upvotes.remove(request.user)
+        else:
+            swordfighter.upvotes.add(request.user)
+        
+        return HttpResponseRedirect(reverse('home', args=[]))
