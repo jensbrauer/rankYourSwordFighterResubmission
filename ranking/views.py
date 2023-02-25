@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic, View
 from django.http import HttpResponseRedirect
+from django.db.models import Count
 from .models import Swordfighter
 
 class SwordfighterList(generic.ListView):
     model = Swordfighter
+    queryset = Swordfighter.objects.annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
     template_name = 'index.html'
 
 
