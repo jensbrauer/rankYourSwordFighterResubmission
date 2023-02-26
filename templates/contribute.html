@@ -13,6 +13,7 @@
         <br>
         {% for suggestion in suggestions %}
             <h1>{{ suggestion.name }}</h1>
+            <p>{{ suggestion.status[1] }}</p>
         {% endfor %}
     </form>
 </div>
