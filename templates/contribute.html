@@ -9,6 +9,15 @@
         {{ swordfighter_form }}
         {% csrf_token %}
         <button type="submit">Submit me</button>
+        <br>
+        <br>
+        {% for suggestion in suggestions %}
+            <h1>{{ suggestion.name }}</h1>
+        {% endfor %}
     </form>
 </div>
 {%endblock%}
+
+
+
+

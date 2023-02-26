@@ -7,7 +7,7 @@ from .forms import SwordfighterForm
 
 class SwordfighterList(generic.ListView):
     model = Swordfighter
-    queryset = Swordfighter.objects.annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
+    queryset = Swordfighter.objects.filter(status=1).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
     template_name = 'index.html'
 
 
@@ -41,16 +41,19 @@ class SwordfighterUpvote(View):
 class Contribute(View):
 
     def get(self, request):
+        suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
+    
         return render(
             request,
             "contribute.html",
             {
-                "swordfighter_form": SwordfighterForm()
+                "swordfighter_form": SwordfighterForm(),
+                "suggestions": suggestions
             }
         )
     
     def post(self, request):
-
+        suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
         swordfighter_form = SwordfighterForm(request.POST, request.FILES)
 
         if swordfighter_form.is_valid():
@@ -64,6 +67,7 @@ class Contribute(View):
             request,
             "contribute.html",
             {
-                "swordfighter_form": SwordfighterForm()
+                "swordfighter_form": SwordfighterForm(),
+                "suggestions": suggestions
             }
         )
