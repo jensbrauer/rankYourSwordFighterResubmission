@@ -48,3 +48,22 @@ class Contribute(View):
                 "swordfighter_form": SwordfighterForm()
             }
         )
+    
+    def post(self, request):
+
+        swordfighter_form = SwordfighterForm(request.POST, request.FILES)
+
+        if swordfighter_form.is_valid():
+            swordfighter_form.instance.suggested_by = request.user.username
+            swordfighter_form.instance.slug = swordfighter_form.cleaned_data['name'].replace(" ", "_")
+            swordfighter = swordfighter_form.save()
+        else:
+            swordfighter_form = SwordfighterForm()
+
+        return render(
+            request,
+            "contribute.html",
+            {
+                "swordfighter_form": SwordfighterForm()
+            }
+        )

@@ -5,8 +5,8 @@
     <h2>
         Contribute page
     </h2>
-    <form method="post">
-        {{ swordfighter_form}}
+    <form method="post" enctype="multipart/form-data">
+        {{ swordfighter_form }}
         {% csrf_token %}
         <button type="submit">Submit me</button>
     </form>

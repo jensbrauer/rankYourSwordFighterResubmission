@@ -14,6 +14,7 @@ class Swordfighter(models.Model):
     profile_img = CloudinaryField('image', default='placeholder')
     upvotes = models.ManyToManyField(User, related_name="swordfighter_upvotes", blank=True)
     status = models.IntegerField(choices=STATUS, default=0)
+    suggested_by = models.CharField(max_length=100, default='admin')
 
 
     class meta:
