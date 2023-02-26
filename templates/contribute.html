@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row" id="error_page">
+    <h2>
+        Contribute page
+    </h2>
+    <form method="post">
+        {{ swordfighter_form}}
+        {% csrf_token %}
+        <button type="submit">Submit me</button>
+    </form>
+</div>
+{%endblock%}
