@@ -14,13 +14,13 @@ class SwordfighterDetail(View):
 
     def get(self, request, slug, *args, **kwargs):
         queryset = Swordfighter.objects
-        character = get_object_or_404(queryset, slug=slug)
+        swordfighter = get_object_or_404(queryset, slug=slug)
 
         return render(
             request,
             "character_page.html",
             {
-                "character": character
+                "swordfighter": swordfighter
             }
         )
 
@@ -34,4 +34,4 @@ class SwordfighterUpvote(View):
         else:
             swordfighter.upvotes.add(request.user)
         
-        return HttpResponseRedirect(reverse('home', args=[]))
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

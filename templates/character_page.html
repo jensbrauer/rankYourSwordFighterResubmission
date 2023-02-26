@@ -5,12 +5,22 @@
 <a href="{% url 'home' %}" id="back-up-link"><h5>< Return to ranking</h5></a>
 <div class="row" id="fighter-header">
     <div class="col-sm-6 col-md-6 col-lg-6">
-        <img class="img-fluid" src="{{ character.profile_img.url }}" alt="Card image cap">
+        <img class="img-fluid" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
     </div>
     <div id="fighter-header-text" class="col-sm-6 col-md-6 col-lg-6">
-        <h2>{{character.name}}</h2>
-        <h3>{{character.appears_on}}</h3>
-        <p>{{character.description}}</p>
+        <h2>{{swordfighter.name}}, {{swordfighter.number_of_upvotes}}</h2>
+        <h3>{{swordfighter.appears_on}}</h3>
+        <p>{{swordfighter.description}}</p>
+        {% if user.is_authenticated %}
+            <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
+                {% csrf_token %}
+            <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
+            </form>
+        {% else %}
+            <button>
+                Log in to upvote!
+            </button>
+        {% endif %}
     </div>
 </div>
 {%endblock%}
