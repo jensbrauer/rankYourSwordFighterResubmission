@@ -4,10 +4,11 @@ from django.http import HttpResponseRedirect
 from django.db.models import Count
 from .models import Swordfighter
 from .forms import SwordfighterForm
+from django.db.models import Q
 
 class SwordfighterList(generic.ListView):
     model = Swordfighter
-    queryset = Swordfighter.objects.filter(status=1).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
+    queryset = Swordfighter.objects.filter(Q(status=1) | Q(status=2)).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
     template_name = 'index.html'
 
 
