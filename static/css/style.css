@@ -71,3 +71,33 @@
   border-radius: 5px;
   color: black;
 }
+
+.in_text_link {
+  color: black;
+}
+
+form {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#suggestion_status_red {
+  background-color: red;
+  width: 100%;
+}
+
+#suggestion_status_green {
+  background-color: green;
+  width: 100%;
+}
+
+#suggestion_status_blue {
+  background-color: blue;
+  width: 100%;
+}
+
+#suggestion_status_yellow {
+  background-color: yellow;
+  width: 100%;
+}

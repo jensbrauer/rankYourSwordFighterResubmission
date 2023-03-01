@@ -4,35 +4,57 @@
 <div class="row">
     {% if user.is_authenticated %}
     <h2>
-        Contribute
+        Suggest a sword fighter that should be featerd on the page:
     </h2>
     <form method="post" enctype="multipart/form-data">
         {{ swordfighter_form.as_p }}
         {% csrf_token %}
+        <p class="fst-italic fw-lighter"> Images should keep a height/width-ratio of 2/3 and be at least 600px wide.</p>
         <br>
         <button type="submit">Submit me</button>
-        <br>
-        <br>
-        {% for suggestion in suggestions %}
-            <h1>{{ suggestion.name }}</h1>
-            <p>{{ suggestion.status }}</p>
-        {% endfor %}
     </form>
+        <br>
+        <br>
+        <br>
+        <h2>Your suggestions</h2>
+        <div class="card-group">
+        {% for suggestion in suggestions %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card"  id="swordfighter-card">
+                <img class="card-img-top" src="{{ suggestion.profile_img.url }}" alt="Card image cap"><div class="card-body">
+                    <h5 class="card-title">{{suggestion.name}}</h5>
+                    <p class="card-text"><small class="text-white">{{suggestion.appears_on}}</small></p>
+                    {% if suggestion.status == 0 %}
+                    <p id="suggestion_status_blue" class="card-text"><small class="text-white">Pending approval</small></p>
+                    {% elif suggestion.status == 1 %}
+                    <p id="suggestion_status_green" class="card-text"><small class="text-white">Published</small></p>
+                    {% elif suggestion.status == 2 %}
+                    <p id="suggestion_status_yellow" class="card-text"><small class="text-white">Published with edits</small></p>
+                    {% else %}
+                    <p id="suggestion_status_red" class="card-text"><small class="text-white">Disapproved</small></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
     {% else %}
     <h2>
-        You need to sign in to Contribute
+        Sign in to suggest a sword fighter to feature on this page!
     </h2>
     <form method="post" enctype="multipart/form-data" disabled>
         {{ swordfighter_form.as_p }}
         {% csrf_token %}
+        <a href=" {% url 'account_login' %}">Sign in</a>
     </form>
-    <a href=" {% url 'account_login' %}"><button>Sign in</button></a>
     {% endif %}
 
 
 
 </div>
 {%endblock%}
+
+
 
 
 

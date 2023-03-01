@@ -13,7 +13,7 @@
           <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
             <h5 class="card-title">#{{forloop.counter}} - {{swordfighter.name}}, {{swordfighter.number_of_upvotes}}</h5>
           </a>
-          <p class="card-text"><small class="text-muted">{{swordfighter.appears_on}}</small></p>
+          <p class="card-text"><small class="text-white">{{swordfighter.appears_on}}</small></p>
           {% if user.is_authenticated %}
           <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
             {% csrf_token %}

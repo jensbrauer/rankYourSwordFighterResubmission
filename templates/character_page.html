@@ -3,7 +3,7 @@
 {% block content %}
 
 
-{% if swordfighter.status == 1 or swordfighter.status == 1 %}
+{% if swordfighter.status == 1 or swordfighter.status == 2 %}
 <a href="{% url 'home' %}" id="back-up-link"><h5>< Return to ranking</h5></a>
 <div class="row" id="fighter-header">
     <div class="col-sm-6 col-md-6 col-lg-6">
@@ -19,9 +19,11 @@
             <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
             </form>
         {% else %}
+        <a href="{% url 'account_login' %}">
             <button>
-                Log in to upvote!
+                 Log in to upvote!
             </button>
+        </a>
         {% endif %}
     </div>
 </div>
