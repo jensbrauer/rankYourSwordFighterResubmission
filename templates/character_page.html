@@ -2,6 +2,8 @@
 
 {% block content %}
 
+
+{% if swordfighter.status == 1 or swordfighter.status == 1 %}
 <a href="{% url 'home' %}" id="back-up-link"><h5>< Return to ranking</h5></a>
 <div class="row" id="fighter-header">
     <div class="col-sm-6 col-md-6 col-lg-6">
@@ -23,4 +25,14 @@
         {% endif %}
     </div>
 </div>
+{% else %}
+<div class="row" id="error_page">
+    <h2>
+        The page you are trying to access does not exist.
+    </h2>
+    <p><a href="{% url 'home' %}">Click here, to get back to ranking list.</a></p>
+</div>
+{% endif %}
 {%endblock%}
+
+
