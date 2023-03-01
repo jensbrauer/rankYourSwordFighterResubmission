@@ -7,7 +7,7 @@
         Contribute
     </h2>
     <form method="post" enctype="multipart/form-data">
-        {{ swordfighter_form }}
+        {{ swordfighter_form.as_p }}
         {% csrf_token %}
         <br>
         <button type="submit">Submit me</button>
@@ -23,7 +23,7 @@
         You need to sign in to Contribute
     </h2>
     <form method="post" enctype="multipart/form-data" disabled>
-        {{ swordfighter_form }}
+        {{ swordfighter_form.as_p }}
         {% csrf_token %}
     </form>
     <a href=" {% url 'account_login' %}"><button>Sign in</button></a>
