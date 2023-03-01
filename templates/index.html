@@ -20,7 +20,7 @@
             <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
           </form>
           {% else %}
-          <button>Log in to upvote!</button>
+          <a href=" {% url 'account_login' %}"><button>Sign in to upvote!</button></a>
           {% endif %}
         </div>
     </div>
