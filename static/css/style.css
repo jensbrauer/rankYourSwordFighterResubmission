@@ -57,4 +57,17 @@
   text-align: center;
 }
 
+#nav_page_button {
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: white;
+  transition: 0,1s;
+  padding-left: 6px;
+}
 
+#nav_page_button:hover {
+  background-color: white;
+  border-radius: 5px;
+  color: black;
+}
