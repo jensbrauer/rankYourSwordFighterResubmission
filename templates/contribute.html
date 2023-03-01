@@ -26,12 +26,20 @@
                     <p class="card-text"><small class="text-white">{{suggestion.appears_on}}</small></p>
                     {% if suggestion.status == 0 %}
                     <p id="suggestion_status_blue" class="card-text"><small class="text-white">Pending approval</small></p>
+                    <form action="{% url 'delete' suggestion.name %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
                     {% elif suggestion.status == 1 %}
                     <p id="suggestion_status_green" class="card-text"><small class="text-white">Published</small></p>
                     {% elif suggestion.status == 2 %}
                     <p id="suggestion_status_yellow" class="card-text"><small class="text-white">Published with edits</small></p>
                     {% else %}
                     <p id="suggestion_status_red" class="card-text"><small class="text-white">Disapproved</small></p>
+                    <form action="{% url 'delete' suggestion.name %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
                     {% endif %}
                 </div>
             </div>
