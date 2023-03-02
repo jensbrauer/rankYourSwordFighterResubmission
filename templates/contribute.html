@@ -53,14 +53,16 @@
         {% endfor %}
         </div>
     {% else %}
-    <h2>
-        Sign in to suggest a sword fighter to feature on this page!
-    </h2>
-    <form method="post" enctype="multipart/form-data" disabled>
-        {{ swordfighter_form.as_p }}
-        {% csrf_token %}
-        <a href=" {% url 'account_login' %}">Sign in</a>
-    </form>
+    <div class="col-sm-8 col-md-8 col-lg-6 mx-auto">
+        <h2>
+            Sign in to suggest a sword fighter to feature on this page!
+        </h2>
+        <form method="post" enctype="multipart/form-data" disabled>
+            {{ swordfighter_form.as_p }}
+            {% csrf_token %}
+            <a href=" {% url 'account_login' %}">Sign in</a>
+        </form>
+    </div>
     {% endif %}
 
 

@@ -79,3 +79,4 @@ class delete_swordfighter(View):
         instance.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
