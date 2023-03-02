@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.db.models import Count
@@ -72,11 +72,26 @@ class Contribute(View):
                 "suggestions": suggestions
             }
         )
+    
 
-class delete_swordfighter(View):
-    def post(self, request, name):
-        instance = Swordfighter.objects.get(name=name)
+
+class Delete_swordfighter(View):
+
+    def get(self, request, slug, *args, **kwargs):
+        queryset = Swordfighter.objects
+        swordfighter = get_object_or_404(queryset, slug=slug)
+
+        return render(
+            request,
+            "ru_sure_delete.html",
+            {
+                "swordfighter": swordfighter
+            }
+        )
+    
+    def post(self, request, slug):
+        instance = Swordfighter.objects.get(slug=slug)
         instance.delete()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
+        return redirect('contribute')
+    
+    

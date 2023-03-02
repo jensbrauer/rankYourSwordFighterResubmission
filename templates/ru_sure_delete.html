@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row" id="error_page">
+    <h2>
+        Are you sure you want to delete {{ swordfighter.name }}?
+    </h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+    </form>
+    <p><a href="{% url 'home' %}">Click here, to get back to ranking list.</a></p>
+</div>
+{%endblock%}

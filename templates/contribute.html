@@ -27,9 +27,11 @@
                 <img class="card-img-top" src="{{ suggestion.profile_img.url }}" alt="Card image cap"><div class="card-body">
                     <h5 class="card-title">{{suggestion.name}}</h5>
                     <p class="card-text"><small class="text-white">{{suggestion.appears_on}}</small></p>
+                    
+                    
                     {% if suggestion.status == 0 %}
                     <p id="suggestion_status_blue" class="card-text"><small class="text-white">Pending approval</small></p>
-                    <form action="{% url 'delete' suggestion.name %}" method="post">
+                    <form action="{% url 'delete' suggestion.slug %}" method="get">
                         {% csrf_token %}
                         <button type="submit">Delete</button>
                     </form>
@@ -42,7 +44,7 @@
                     <p id="suggestion_status_yellow" class="card-text"><small class="text-white">Published with edits</small></p>
                     {% else %}
                     <p id="suggestion_status_red" class="card-text"><small class="text-white">Disapproved</small></p>
-                    <form action="{% url 'delete' suggestion.name %}" method="post">
+                    <form action="{% url 'delete' suggestion.slug %}" method="get">
                         {% csrf_token %}
                         <button type="submit">Delete</button>
                     </form>
