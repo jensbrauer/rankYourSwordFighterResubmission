@@ -6,6 +6,6 @@ urlpatterns = [
     path('<slug:slug>/', views.SwordfighterDetail.as_view(), name='swordfighter_detail'),
     path('upvote/<slug:slug>', views.SwordfighterUpvote.as_view(), name="swordfighter_upvote"),
     path('contribute', views.Contribute.as_view(), name='contribute'),
-    path('<name>', views.delete.as_view(), name='delete')
+    path('<name>', views.delete_swordfighter.as_view(), name='delete')
 ]
 

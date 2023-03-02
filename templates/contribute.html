@@ -3,16 +3,19 @@
 {% block content %}
 <div class="row">
     {% if user.is_authenticated %}
-    <h2>
-        Suggest a sword fighter that should be featerd on the page:
-    </h2>
-    <form method="post" enctype="multipart/form-data">
-        {{ swordfighter_form.as_p }}
-        {% csrf_token %}
-        <p class="fst-italic fw-lighter"> Images should keep a height/width-ratio of 2/3 and be at least 600px wide.</p>
-        <br>
-        <button type="submit">Submit me</button>
-    </form>
+    
+    <div class="col-sm-8 col-md-8 col-lg-6 mx-auto">
+        <h2>
+            Suggest a sword fighter that should be featerd on the page:
+        </h2>
+        <form method="post" enctype="multipart/form-data">
+            {{ swordfighter_form.as_p }}
+            {% csrf_token %}
+            <p class="fst-italic fw-lighter"> Images should keep a height/width-ratio of 2/3 and be at least 600px wide.<br>Images may be edited by administrators.</p>
+            <br>
+            <button type="submit">Submit me</button>
+        </form>
+    </div>
         <br>
         <br>
         <br>
@@ -32,6 +35,9 @@
                     </form>
                     {% elif suggestion.status == 1 %}
                     <p id="suggestion_status_green" class="card-text"><small class="text-white">Published</small></p>
+                    <a href="{% url 'swordfighter_detail' suggestion.slug %}" class="swordfighter-link">
+                        <button>View page</button>
+                    </a>
                     {% elif suggestion.status == 2 %}
                     <p id="suggestion_status_yellow" class="card-text"><small class="text-white">Published with edits</small></p>
                     {% else %}

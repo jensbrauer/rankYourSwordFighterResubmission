@@ -73,8 +73,9 @@ class Contribute(View):
             }
         )
 
-class delete(View):
+class delete_swordfighter(View):
     def post(self, request, name):
         instance = Swordfighter.objects.get(name=name)
         instance.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
