@@ -35,6 +35,20 @@
     <p><a href="{% url 'home' %}">Click here, to get back to ranking list.</a></p>
 </div>
 {% endif %}
+
+<!-- Commentform here -->
+
+<form method="post">
+    {{ comment_form.as_p }}
+    {% csrf_token %}
+    <button type="submit">Submit me</button>
+</form>
+
+{% for comment in comments %}
+<h2>{{comment.submitted_by}}</h2>
+<p>{{comment.content}}</p>
+{% endfor %}
 {%endblock%}
+
 
 

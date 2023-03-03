@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.db.models import Count
-from .models import Swordfighter
-from .forms import SwordfighterForm
+from .models import Swordfighter, Comment
+from .forms import SwordfighterForm, CommentForm
 from django.db.models import Q
 
 class SwordfighterList(generic.ListView):
@@ -17,12 +17,39 @@ class SwordfighterDetail(View):
     def get(self, request, slug, *args, **kwargs):
         queryset = Swordfighter.objects
         swordfighter = get_object_or_404(queryset, slug=slug)
+        
+        comments = Comment.objects.filter(swordfighter=swordfighter)
+        return render(
+            request,
+            "character_page.html",
+            {
+                "swordfighter": swordfighter,
+                "comments": comments,
+                "comment_form": CommentForm()
+            }
+        )
+    
+    def post(self, request, slug, *args, **kwargs):
+        queryset = Swordfighter.objects
+        swordfighter = get_object_or_404(queryset, slug=slug)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment_form.instance.submitted_by = request.user.username
+            comment = comment_form.save(commit=False)
+            comment.swordfighter = swordfighter
+            comment = comment_form.save()
+        else:
+            comment_form = CommentForm()
+        
+        comments = Comment.objects.filter(swordfighter=swordfighter)
 
         return render(
             request,
             "character_page.html",
             {
-                "swordfighter": swordfighter
+                "swordfighter": swordfighter,
+                "comments": comments,
+                "comment_form": CommentForm(),
             }
         )
 

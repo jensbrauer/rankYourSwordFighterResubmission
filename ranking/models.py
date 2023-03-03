@@ -27,5 +27,16 @@ class Swordfighter(models.Model):
         return self.upvotes.count()
 
 
+class Comment(models.Model):
+    swordfighter = models.ForeignKey(Swordfighter, on_delete=models.CASCADE, related_name="comments")
+    submitted_by = models.CharField(max_length=100)
+    submitted_on_date = models.DateTimeField(auto_now_add=True)
+    reported = models.BooleanField(default=False)
+    content = models.TextField()
 
+    class Meta:
+        ordering = ["submitted_on_date"]
+
+    def __str__(self):
+        return f"{self.submitted_by} on {self.submitted_on_date} - {self.content}"
 
