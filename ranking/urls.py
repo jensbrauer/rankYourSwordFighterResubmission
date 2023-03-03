@@ -7,6 +7,8 @@ urlpatterns = [
     path('upvote/<slug:slug>', views.SwordfighterUpvote.as_view(), name="swordfighter_upvote"),
     path('contribute', views.Contribute.as_view(), name='contribute'),
     path('delete/<slug>/', views.Delete_swordfighter.as_view(), name='delete'),
-    path('edit/<slug>/', views.edit_swordfighter.as_view(), name='edit')
+    path('edit/<slug>/', views.edit_swordfighter.as_view(), name='edit'),
+    path('flag/<id>', views.FlagComment.as_view(), name='flag_comment'),
+    path('delete_comment/<id>', views.DeleteComment.as_view(), name='delete_comment'),
 ]
 

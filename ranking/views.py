@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.db.models import Count
-from .models import Swordfighter, Comment
+from .models import Swordfighter, Comment, User
 from .forms import SwordfighterForm, CommentForm
 from django.db.models import Q
 
@@ -17,7 +17,12 @@ class SwordfighterDetail(View):
     def get(self, request, slug, *args, **kwargs):
         queryset = Swordfighter.objects
         swordfighter = get_object_or_404(queryset, slug=slug)
-        
+        swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
+        flagged_comments = []
+        for comment in swordfighter_comments:
+            if comment.flags.filter(id=self.request.user.id):
+                flagged_comments.append(comment.id)
+
         comments = Comment.objects.filter(swordfighter=swordfighter)
         return render(
             request,
@@ -25,7 +30,8 @@ class SwordfighterDetail(View):
             {
                 "swordfighter": swordfighter,
                 "comments": comments,
-                "comment_form": CommentForm()
+                "comment_form": CommentForm(),
+                "flagged_comments": flagged_comments,
             }
         )
     
@@ -138,6 +144,23 @@ class edit_swordfighter(View):
     
     def post(self, request, slug):
         swordfighter = Swordfighter.objects.get(slug=slug)
-        submit_form = SwordfighterForm(request.POST, instance=swordfighter)
+        submit_form = SwordfighterForm(request.POST, request.FILES, instance=swordfighter)
         submit_form.save()
         return redirect('contribute')
+
+class FlagComment(View):
+    
+    def post(self, request, id, *args, **kwargs):
+        comment = Comment.objects.get(id=id)
+        if comment.flags.filter(id=request.user.id).exists():
+            comment.flags.remove(request.user)
+        else:
+            comment.flags.add(request.user)
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+class DeleteComment(View):
+    def post(self, request, id):
+        instance = Comment.objects.get(id=id)
+        instance.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

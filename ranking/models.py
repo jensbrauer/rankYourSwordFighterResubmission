@@ -31,12 +31,15 @@ class Comment(models.Model):
     swordfighter = models.ForeignKey(Swordfighter, on_delete=models.CASCADE, related_name="comments")
     submitted_by = models.CharField(max_length=100)
     submitted_on_date = models.DateTimeField(auto_now_add=True)
-    reported = models.BooleanField(default=False)
     content = models.TextField()
+    flags = models.ManyToManyField(User, related_name='comment_flag', blank=True)
 
     class Meta:
-        ordering = ["submitted_on_date"]
+        ordering = ["-submitted_on_date"]
 
     def __str__(self):
         return f"{self.submitted_by} on {self.submitted_on_date} - {self.content}"
+        
+    def count_flags(self):
+        return self.flags.count()
 
