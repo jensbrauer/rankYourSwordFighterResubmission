@@ -24,7 +24,10 @@
         {% for suggestion in suggestions %}
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card"  id="swordfighter-card">
-                <img class="card-img-top" src="{{ suggestion.profile_img.url }}" alt="Card image cap"><div class="card-body">
+                <div class="card-body ratio ratio-4x3">
+                    <img class="card-img-top" src="{{ suggestion.profile_img.url }}" alt="Card image cap">
+                </div>
+                <div class="card-body">
                     <h5 class="card-title">{{suggestion.name}}</h5>
                     <p class="card-text"><small class="text-white">{{suggestion.appears_on}}</small></p>
                     
