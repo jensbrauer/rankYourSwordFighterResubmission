@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-8 col-md-8 col-lg-6 mx-auto">
+        <h2>
+            edit {{ swordfighter.name }}
+        </h2>
+        <form method="post" enctype="multipart/form-data">
+            {{ edit_form.as_p }}
+            {% csrf_token %}
+            <button type="submit">Submit me</button>
+        </form>
+    </div>
+</div>
+{%endblock%}
+

@@ -94,4 +94,23 @@ class Delete_swordfighter(View):
         instance.delete()
         return redirect('contribute')
     
+
+class edit_swordfighter(View):
     
+    def get(self, request, slug):
+        swordfighter = Swordfighter.objects.get(slug=slug)
+        edit_form = SwordfighterForm(instance=swordfighter)
+        return render(
+            request,
+            "edit_swordfighter.html",
+            {
+                "edit_form": edit_form,
+                "swordfighter": swordfighter
+            }
+        )
+    
+    def post(self, request, slug):
+        swordfighter = Swordfighter.objects.get(slug=slug)
+        submit_form = SwordfighterForm(request.POST, instance=swordfighter)
+        submit_form.save()
+        return redirect('contribute')

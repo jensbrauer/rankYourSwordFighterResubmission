@@ -35,6 +35,10 @@
                         {% csrf_token %}
                         <button type="submit">Delete</button>
                     </form>
+                    <form action="{% url 'edit' suggestion.slug %}" method="get">
+                        {% csrf_token %}
+                        <button type="submit">Edit</button>
+                    </form>
                     {% elif suggestion.status == 1 %}
                     <p id="suggestion_status_green" class="card-text"><small class="text-white">Published</small></p>
                     <a href="{% url 'swordfighter_detail' suggestion.slug %}" class="swordfighter-link">
