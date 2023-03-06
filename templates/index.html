@@ -8,7 +8,7 @@
     <div class="card"  id="swordfighter-card">
         <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
           <div class="card-body ratio ratio-4x3">
-            <img class="card-img-top" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
+            <img id="list_img" class="card-img-top" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
           </div>
         </a>
           <div class="card-body">

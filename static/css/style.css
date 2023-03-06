@@ -1,10 +1,13 @@
-.card-img-top {
-  border: 1px solid black;
-  filter: grayscale(30%);
+.card-img-top{
   object-fit: cover;
 }
 
-.card-img-top:hover {
+#list_img {
+  border: 1px solid black;
+  filter: grayscale(30%);
+}
+
+#list_img:hover {
   filter: grayscale(0%);
 }
 
