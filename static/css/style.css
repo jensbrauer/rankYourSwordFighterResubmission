@@ -1,5 +1,6 @@
 .card-img-top{
   object-fit: cover;
+  background-color: white;
 }
 
 #list_img {
@@ -63,15 +64,17 @@
 
 #nav_page_button {
   background-color: black;
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 5px;
   color: white;
   transition: 0,1s;
   padding-left: 6px;
+  margin: 0 5px 0 5px;
 }
 
 #nav_page_button:hover {
   background-color: white;
+  border: 1px solid black;
   border-radius: 5px;
   color: black;
 }
@@ -104,4 +107,9 @@
 #comment {
   background-color: aqua;
   margin: 5px;
+}
+
+#landing_hero{
+  background-color: brown;
+  padding: 10px 10px 0 10px;
 }

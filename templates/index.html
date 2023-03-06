@@ -1,8 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="card-group">
+<div id="landing_hero" class="card mb-3">
+  <div class="row g-0">
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Who is the greatest sword fighter?</h5>
+        <ul>
+          <li>View the current ranking</li>
+          <li>Click on the fighters to learn more</li>
+          <li>Sign up or Sign in to
+            <ul>
+              <li>Comment</li>
+              <li>Contribute</li>
+            </ul>
+          </li>
+        </ul>
+        </div>
+    </div>
+    <div class="col-md-4">
+      <img src="../static/images/hero_img.png" class="img-fluid rounded-start" alt="masked_swordfighter">
+    </div>
+  </div>
+</div>
+<div id="ranking_list" class="card-group">
 {% for swordfighter in swordfighter_list %}
   <div class="col-12 col-md-6 col-lg-4">
     <div class="card"  id="swordfighter-card">
