@@ -26,6 +26,7 @@ class SwordfighterDetail(View):
         queryset = Swordfighter.objects
         swordfighter = get_object_or_404(queryset, slug=slug)
         swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
+        current_user = request.user
         flagged_comments = []
         for comment in swordfighter_comments:
             if comment.flags.filter(id=self.request.user.id):
@@ -40,6 +41,7 @@ class SwordfighterDetail(View):
                 "comments": comments,
                 "comment_form": CommentForm(),
                 "flagged_comments": flagged_comments,
+                "current_user": current_user,
             }
         )
     

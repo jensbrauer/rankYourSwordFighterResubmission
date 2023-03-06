@@ -3,7 +3,7 @@
 {% block content %}
 
 
-{% if swordfighter.status == 1 or swordfighter.status == 2 %}
+{% if swordfighter.status == 1 or swordfighter.status == 2 or current_user.username == swordfighter.suggested_by %}
 <a href="{% url 'ranking' %}" id="back-up-link"><h5>< Return to ranking</h5></a>
 <div class="row" id="fighter-header">
     <div class="col-lg-6">
@@ -53,6 +53,13 @@
         <div class="card-body">
           <h5 class="card-title">{{comment.submitted_by}}</h5>
           <p class="card-text">{{comment.content}}</p>
+          
+        {% if comment.submitted_by == current_user.username %}
+        <form action="{% url 'delete_comment' comment.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+        {% else %}
         <form class="d-inline" action="{% url 'flag_comment' comment.id %}" method="POST">
             {% csrf_token %}
             {% if comment.id in flagged_comments %}
@@ -61,11 +68,8 @@
             <button type="submit" name="comment_id" value="{{comment.id}}" class="btn-like">flag this comment</button>
             {% endif %}
         </form>
+        {% endif %}
         </div>
-        <form action="{% url 'delete_comment' comment.id %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">Delete</button>
-        </form>
     </div>
 </div>
 {% endfor %}
