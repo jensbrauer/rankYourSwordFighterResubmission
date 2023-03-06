@@ -6,10 +6,18 @@ from .models import Swordfighter, Comment, User
 from .forms import SwordfighterForm, CommentForm
 from django.db.models import Q
 
+
+class LandingPage(View):
+    def get(self, request):
+        return render(
+            request,
+            "landing.html"
+        )
+
 class SwordfighterList(generic.ListView):
     model = Swordfighter
     queryset = Swordfighter.objects.filter(Q(status=1) | Q(status=2)).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
-    template_name = 'index.html'
+    template_name = 'ranking.html'
 
 
 class SwordfighterDetail(View):
@@ -107,7 +115,6 @@ class Contribute(View):
         )
     
 
-
 class Delete_swordfighter(View):
 
     def get(self, request, slug, *args, **kwargs):
@@ -159,7 +166,9 @@ class FlagComment(View):
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
 class DeleteComment(View):
+    
     def post(self, request, id):
         instance = Comment.objects.get(id=id)
         instance.delete()

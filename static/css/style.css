@@ -113,3 +113,12 @@
   background-color: brown;
   padding: 10px 10px 0 10px;
 }
+
+#hero_text {
+  text-align: center;
+}
+
+#hero_info {
+  color: brown;
+  background-color: azure;
+}
