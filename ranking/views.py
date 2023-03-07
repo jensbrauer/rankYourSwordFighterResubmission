@@ -18,8 +18,8 @@ class SwordfighterList(View):
     def get(self, request):
         swordfighters = Swordfighter.objects.filter(Q(status=1) | Q(status=2)).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
         current_user = self.request.user.id
+        comments = Comment.objects.all()
         upvoted_fighters = []
-
         for swordfighter in swordfighters:
             if swordfighter.upvotes.filter(id=current_user).exists():
                 upvoted_fighters.append(swordfighter.name)
@@ -30,6 +30,7 @@ class SwordfighterList(View):
             {
                 'swordfighters': swordfighters,
                 'upvoted_fighters': upvoted_fighters,
+                'comments': comments
             }
         )
 

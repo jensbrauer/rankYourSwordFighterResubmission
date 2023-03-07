@@ -10,6 +10,7 @@
 
 #list_img:hover {
   filter: grayscale(0%);
+  border-color: #DC4C64;
 }
 
 .card {
@@ -46,11 +47,11 @@
 
 .swordfighter-link, .swordfighter-link:visited {
   text-decoration: none;
-  color: white;
+  color: #FBFBFB;
 }
 .swordfighter-link:hover {
   text-decoration: none;
-  color:red;
+  color:#DC4C64;
 }
 
 .navbar {

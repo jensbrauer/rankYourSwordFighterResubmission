@@ -6,35 +6,41 @@
 {% for swordfighter in swordfighters %}
   <div class="col-12 col-md-6 col-lg-4">
     <div class="card text-bg-dark"  id="swordfighter-card">
+      <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
+        <div class="card-body ratio ratio-4x3">
+          <img id="list_img" class="card-img-top" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
+        </div>
+      </a>
+      <div class="card-body">
         <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
-          <div class="card-body ratio ratio-4x3">
-            <img id="list_img" class="card-img-top" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
-          </div>
+          <h4 class="card-title">#{{forloop.counter}} - {{swordfighter.name}}</h4>
         </a>
-          <div class="card-body">
-          <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
-            <h5 class="card-title">#{{forloop.counter}} - {{swordfighter.name}}, {{swordfighter.number_of_upvotes}}</h5>
-          </a>
-          <p class="card-text"><small class="text-white">{{swordfighter.appears_on}}</small></p>
-          {% if user.is_authenticated %}
-          {% if swordfighter.name in upvoted_fighters %}
+        <p class="card-text fs-5 text-light">{{swordfighter.appears_on}}</p>
+        {% if swordfighter.number_of_upvotes == 1 %}
+          <p class="card-text fs-6 text-light">{{swordfighter.number_of_upvotes}} upvote</p>
+        {% else %}
+          <p class="card-text fs-6 text-light">{{swordfighter.number_of_upvotes}} upvotes</p>
+        {% endif %}
+        {% if user.is_authenticated %}
+        {% if swordfighter.name in upvoted_fighters %}
           <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
             {% csrf_token %}
-            <button class="btn btn-secondary" type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">undo upvote</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-secondary me-md-2" type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">undo upvote</button>
+            </div>
           </form>
-          {% else %}
+        {% else %}
           <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
             {% csrf_token %}
             <button class="btn btn-light" type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
           </form>
-          {% endif %}
-          {% else %}
+        {% endif %}
+        {% else %}
           <a href=" {% url 'account_login' %}"><button class="btn btn-dark">Sign in to upvote!</button></a>
-          {% endif %}
-        </div>
+        {% endif %}
+      </div>
     </div>
-  </div>
-  
+  </div>  
 {% endfor %}
 </div>
 {%endblock%}
