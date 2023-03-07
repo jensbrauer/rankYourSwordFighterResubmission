@@ -14,10 +14,24 @@ class LandingPage(View):
             "landing.html"
         )
 
-class SwordfighterList(generic.ListView):
-    model = Swordfighter
-    queryset = Swordfighter.objects.filter(Q(status=1) | Q(status=2)).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
-    template_name = 'ranking.html'
+class SwordfighterList(View):
+    def get(self, request):
+        swordfighters = Swordfighter.objects.filter(Q(status=1) | Q(status=2)).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
+        current_user = self.request.user.id
+        upvoted_fighters = []
+
+        for swordfighter in swordfighters:
+            if swordfighter.upvotes.filter(id=current_user).exists():
+                upvoted_fighters.append(swordfighter.name)
+
+        return render(
+            request,
+            "ranking.html",
+            {
+                'swordfighters': swordfighters,
+                'upvoted_fighters': upvoted_fighters,
+            }
+        )
 
 
 class SwordfighterDetail(View):

@@ -3,9 +3,9 @@
 {% block content %}
 
 <div id="ranking_list" class="card-group">
-{% for swordfighter in swordfighter_list %}
+{% for swordfighter in swordfighters %}
   <div class="col-12 col-md-6 col-lg-4">
-    <div class="card"  id="swordfighter-card">
+    <div class="card text-bg-dark"  id="swordfighter-card">
         <a href="{% url 'swordfighter_detail' swordfighter.slug %}" class="swordfighter-link">
           <div class="card-body ratio ratio-4x3">
             <img id="list_img" class="card-img-top" src="{{ swordfighter.profile_img.url }}" alt="Card image cap">
@@ -17,17 +17,24 @@
           </a>
           <p class="card-text"><small class="text-white">{{swordfighter.appears_on}}</small></p>
           {% if user.is_authenticated %}
+          {% if swordfighter.name in upvoted_fighters %}
           <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
             {% csrf_token %}
-            <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
+            <button class="btn btn-secondary" type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">undo upvote</button>
           </form>
           {% else %}
-          <a href=" {% url 'account_login' %}"><button>Sign in to upvote!</button></a>
+          <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-light" type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
+          </form>
+          {% endif %}
+          {% else %}
+          <a href=" {% url 'account_login' %}"><button class="btn btn-dark">Sign in to upvote!</button></a>
           {% endif %}
         </div>
     </div>
   </div>
-
+  
 {% endfor %}
 </div>
 {%endblock%}
