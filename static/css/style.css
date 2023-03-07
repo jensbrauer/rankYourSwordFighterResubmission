@@ -63,7 +63,7 @@
 }
 
 #nav_page_button {
-  background-color: black;
+  background-color: #332D2D;
   border: 1px solid white;
   border-radius: 5px;
   color: white;
@@ -74,9 +74,9 @@
 
 #nav_page_button:hover {
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid #332D2D;
   border-radius: 5px;
-  color: black;
+  color: #332D2D;
 }
 
 .in_text_link {
@@ -109,16 +109,6 @@
   margin: 5px;
 }
 
-#landing_hero{
-  background-color: brown;
-  padding: 10px 10px 0 10px;
-}
-
 #hero_text {
   text-align: center;
-}
-
-#hero_info {
-  color: brown;
-  background-color: azure;
 }

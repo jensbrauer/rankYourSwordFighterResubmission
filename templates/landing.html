@@ -1,23 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="landing_hero" class="card mb-3">
+<div id="landing_hero" class="card text-bg-danger mb-3">
     <div class="row g-0">
-      <div class="col-md-8">
+      <div class="col-lg-8">
         <div id="hero_text" class="card-body">
-          <h2 class="card-title">RANK THE GREATEST<br>SWORD FIGHTER</h2>
-          <div id="hero_info" class="card text-bg-light">
+          <div class="d-none d-sm-none d-md-block">
+            <h2 class="card-title">RANK THE GREATEST<br>SWORD FIGHTER</h2>
+          </div>
+          <div id="hero_info" class="card text-bg-dark">
             <div class="card-body">
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" class="btn btn-secondary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <p class="card-text">Check out the current ranking list of swordfighter and explore the individual characters.</p>
+              <a href="{% url 'ranking' %}" class="btn btn-light">Ranking List</a>
+            </div>
+          </div>
+          <div id="hero_info" class="card text-bg-dark">
+            <div class="card-body">
+              <p class="card-text">Log in to leave comments on fighters, upvote them in the ranking and to suggest fighters that should be added to the list.</p>
+              <a href="{% url 'account_login' %}" class="btn btn-light">Log in</a>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <img src="../static/images/hero_img.png" class="img-fluid rounded-start" alt="masked_swordfighter">
+      <div id="hero_img" class="col-6 col-md-8 col-lg-4 align-self-end mx-auto">
+        <img src="../static/images/hero_img.png" class="img-fluid" alt="masked_swordfighter">
       </div>
     </div>
   </div>
