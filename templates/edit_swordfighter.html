@@ -11,6 +11,7 @@
             {% csrf_token %}
             <button type="submit">Submit me</button>
         </form>
+        <p><a href="{% url 'ranking' %}">Or click here, to get back to ranking list.</a></p>
     </div>
 </div>
 {%endblock%}
