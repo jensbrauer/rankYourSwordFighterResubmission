@@ -15,18 +15,10 @@
         <h2>{{swordfighter.name}}, {{swordfighter.number_of_upvotes}}</h2>
         <h3>{{swordfighter.appears_on}}</h3>
         <p>{{swordfighter.description}}</p>
-        {% if user.is_authenticated %}
             <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
                 {% csrf_token %}
             <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
             </form>
-        {% else %}
-        <a href="{% url 'account_login' %}">
-            <button>
-                 Log in to upvote!
-            </button>
-        </a>
-        {% endif %}
     </div>
 </div>
 {% else %}

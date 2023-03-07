@@ -21,7 +21,6 @@
         {% else %}
           <p class="card-text fs-6 text-light">{{swordfighter.number_of_upvotes}} upvotes</p>
         {% endif %}
-        {% if user.is_authenticated %}
         {% if swordfighter.name in upvoted_fighters %}
           <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
             {% csrf_token %}
@@ -34,9 +33,6 @@
             {% csrf_token %}
             <button class="btn btn-light" type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
           </form>
-        {% endif %}
-        {% else %}
-          <a href=" {% url 'account_login' %}"><button class="btn btn-dark">Sign in to upvote!</button></a>
         {% endif %}
       </div>
     </div>

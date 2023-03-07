@@ -85,16 +85,19 @@ class SwordfighterDetail(View):
         )
 
 class SwordfighterUpvote(View):
-
     def post(self, request, slug):
-        swordfighter = get_object_or_404(Swordfighter, slug=slug)
+        if request.user.is_authenticated:
+            swordfighter = get_object_or_404(Swordfighter, slug=slug)
 
-        if swordfighter.upvotes.filter(id=request.user.id).exists():
-            swordfighter.upvotes.remove(request.user)
+            if swordfighter.upvotes.filter(id=request.user.id).exists():
+                swordfighter.upvotes.remove(request.user)
+            else:
+                swordfighter.upvotes.add(request.user)
+            
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
-            swordfighter.upvotes.add(request.user)
-        
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return redirect(reverse('account_login'))
+
 
 
 class Contribute(View):
