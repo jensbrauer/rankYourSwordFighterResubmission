@@ -6,6 +6,14 @@ from .models import Swordfighter, Comment, User
 from .forms import SwordfighterForm, CommentForm
 from django.db.models import Q
 
+class Helper():
+    def _user_permitted(self, request, swordfighter):
+        if not request.user.username == swordfighter.suggested_by:
+            if not swordfighter.status == 1:
+                if not swordfighter.status == 2:
+                    return False
+        return True
+
 
 class LandingPage(View):
     def get(self, request):
@@ -34,19 +42,12 @@ class SwordfighterList(View):
         )
 
 
-class SwordfighterDetail(View):
+class SwordfighterDetail(View, Helper):
     queryset = Swordfighter.objects
-
-    def __user_permitted(self, request, swordfighter):
-        if not request.user.username == swordfighter.suggested_by:
-            if not swordfighter.status == 1:
-                if not swordfighter.status == 2:
-                    return False
-        return True
 
     def get(self, request, slug, *args, **kwargs):
         swordfighter = get_object_or_404(self.queryset, slug=slug)
-        if not self.__user_permitted(request, swordfighter):
+        if not self._user_permitted(request, swordfighter):
             return render(
                 request,
                 '403.html'
@@ -78,67 +79,72 @@ class SwordfighterDetail(View):
     
     def post(self, request, slug, *args, **kwargs):
         
-        if request.user.is_authenticated:
-            swordfighter = get_object_or_404(self.queryset, slug=slug)
-            comment_form = CommentForm(request.POST)
-            swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
-            current_user = request.user
-
-            flagged_comments = []
-            for comment in swordfighter_comments:
-                if comment.flags.filter(id=self.request.user.id):
-                    flagged_comments.append(comment.id)
-            if request.user.is_authenticated:
-                button_name='Submit'
-            else:
-                button_name='Login to comment'
-
-            if comment_form.is_valid():
-                comment_form.instance.submitted_by = request.user.username
-                comment = comment_form.save(commit=False)
-                comment.swordfighter = swordfighter
-                comment = comment_form.save()
-            else:
-                comment_form = CommentForm()
-            
-            comments = Comment.objects.filter(swordfighter=swordfighter)
-
-            return render(
-                request,
-                "character_page.html",
-                {
-                    "swordfighter": swordfighter,
-                    "comments": comments,
-                    "comment_form": CommentForm(),
-                    "button_name": button_name,
-                    "flagged_comments": flagged_comments,
-                    "current_user": current_user,
-                    "button_name": button_name,
-                }
-            )
-        else:
+        if not request.user.is_authenticated:
             return redirect(reverse('account_login'))
 
+        swordfighter = get_object_or_404(self.queryset, slug=slug)
+        comment_form = CommentForm(request.POST)
+        swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
+        current_user = request.user
+
+        flagged_comments = []
+        for comment in swordfighter_comments:
+            if comment.flags.filter(id=self.request.user.id):
+                flagged_comments.append(comment.id)
+        if request.user.is_authenticated:
+            button_name='Submit'
+        else:
+            button_name='Login to comment'
+
+        if comment_form.is_valid():
+            comment_form.instance.submitted_by = request.user.username
+            comment = comment_form.save(commit=False)
+            comment.swordfighter = swordfighter
+            comment = comment_form.save()
+        else:
+            comment_form = CommentForm()
+            
+        comments = Comment.objects.filter(swordfighter=swordfighter)
+
+        return render(
+            request,
+            "character_page.html",
+           {
+                "swordfighter": swordfighter,
+                "comments": comments,
+                "comment_form": CommentForm(),
+                "button_name": button_name,
+                "flagged_comments": flagged_comments,
+                "current_user": current_user,
+                "button_name": button_name,
+            }
+        )
+ 
+ 
 
 class SwordfighterUpvote(View):
     def post(self, request, slug):
-        if request.user.is_authenticated:
-            swordfighter = get_object_or_404(Swordfighter, slug=slug)
-
-            if swordfighter.upvotes.filter(id=request.user.id).exists():
-                swordfighter.upvotes.remove(request.user)
-            else:
-                swordfighter.upvotes.add(request.user)
-            
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        else:
+        if not request.user.is_authenticated:
             return redirect(reverse('account_login'))
+        swordfighter = get_object_or_404(Swordfighter, slug=slug)
+
+        if swordfighter.upvotes.filter(id=request.user.id).exists():
+            swordfighter.upvotes.remove(request.user)
+        else:
+            swordfighter.upvotes.add(request.user)
+            
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 
 class Contribute(View):
 
     def get(self, request):
+        if not request.user.is_authenticated:
+            button_name = 'Log in'
+        else:
+            button_name = 'Submit'
+        
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
     
         return render(
@@ -146,13 +152,18 @@ class Contribute(View):
             "contribute.html",
             {
                 "swordfighter_form": SwordfighterForm(),
-                "suggestions": suggestions
+                "suggestions": suggestions,
+                "button_name": button_name
             }
         )
     
     def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect(reverse('account_login'))
+
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
         swordfighter_form = SwordfighterForm(request.POST, request.FILES)
+        button_name = 'Submit'
 
         if swordfighter_form.is_valid():
             swordfighter_form.instance.suggested_by = request.user.username
@@ -166,16 +177,29 @@ class Contribute(View):
             "contribute.html",
             {
                 "swordfighter_form": SwordfighterForm(),
-                "suggestions": suggestions
+                "suggestions": suggestions,
+                "button_name": button_name
             }
         )
     
 
 class Delete_swordfighter(View):
 
+    def __user_permitted(self, request, swordfighter):
+        if not request.user.username == swordfighter.suggested_by:
+            if not swordfighter.status == 1:
+                if not swordfighter.status == 2:
+                    return False
+        return True
+
     def get(self, request, slug, *args, **kwargs):
         queryset = Swordfighter.objects
         swordfighter = get_object_or_404(queryset, slug=slug)
+        if not self.__user_permitted(request, swordfighter):
+            return render(
+                request,
+                '403.html'
+            )
 
         return render(
             request,
@@ -191,10 +215,16 @@ class Delete_swordfighter(View):
         return redirect('contribute')
     
 
-class edit_swordfighter(View):
+
+
+class edit_swordfighter(View, Helper):
     
     def get(self, request, slug):
+
         swordfighter = Swordfighter.objects.get(slug=slug)
+        if not self._user_permitted(request, swordfighter):
+            return render(request,'403.html')
+
         edit_form = SwordfighterForm(instance=swordfighter)
         return render(
             request,
@@ -210,6 +240,7 @@ class edit_swordfighter(View):
         submit_form = SwordfighterForm(request.POST, request.FILES, instance=swordfighter)
         submit_form.save()
         return redirect('contribute')
+
 
 class FlagComment(View):
     
@@ -229,3 +260,5 @@ class DeleteComment(View):
         instance = Comment.objects.get(id=id)
         instance.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
