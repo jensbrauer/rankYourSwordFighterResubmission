@@ -3,7 +3,6 @@
 {% block content %}
 
 
-{% if swordfighter.status == 1 or swordfighter.status == 2 or current_user.username == swordfighter.suggested_by %}
 <a href="{% url 'ranking' %}" id="back-up-link"><h5>< Return to ranking</h5></a>
 <div class="row" id="fighter-header">
     <div class="col-lg-6">
@@ -17,27 +16,25 @@
         <p>{{swordfighter.description}}</p>
             <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
                 {% csrf_token %}
-            <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">upvote</button>
+            <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}" class="btn btn-light">upvote</button>
             </form>
     </div>
 </div>
-{% else %}
-<div class="row" id="error_page">
-    <h2>
-        The page you are trying to access does not exist.
-    </h2>
-    <p><a href="{% url 'home' %}">Click here, to get back to ranking list.</a></p>
-</div>
-{% endif %}
 
 <!-- Commentform here -->
-
+{% if user.is_authenticated %}
 <form method="post">
     {{ comment_form.content }}
     {% csrf_token %}
     <button type="submit">{{button_name}}</button>
 </form>
-
+{% else %}
+<form method="post">
+    {{ comment_form.content }}
+    {% csrf_token %}
+    <a href="{% url 'account_login' %}" class="btn btn-dark">{{button_name}}</a>
+</form>
+{% endif %}
 {% for comment in comments %}
 <div class="row">
     <div class="card text-dark bg-light mb-3">

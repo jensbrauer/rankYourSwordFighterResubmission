@@ -4,18 +4,18 @@
 }
 
 #list_img {
-  border: 1px solid black;
+  border: 1px solid #212529;
   filter: grayscale(30%);
 }
 
 #list_img:hover {
   filter: grayscale(0%);
-  border-color: #DC4C64;
+  border-color: #DC3545;
 }
 
 .card {
   border: none;
-  background-color: black;
+  background-color: #212529;
   color: white;
   margin: 5px;
 }
@@ -25,12 +25,12 @@
 }
 
 #fighter-header {
-  border: 1px solid black;
+  border: 1px solid #212529;
   border-radius: 2px;
 }
 
 #fighter-header-text {
-  background-color: black;
+  background-color: #212529;
   color: white;
   padding: 16px;
 }
@@ -42,7 +42,7 @@
 }
 
 #back-up-link:hover {
-  color: black;
+  color: #212529;
 }
 
 .swordfighter-link, .swordfighter-link:visited {
@@ -51,7 +51,7 @@
 }
 .swordfighter-link:hover {
   text-decoration: none;
-  color:#DC4C64;
+  color:#DC3545;
 }
 
 .navbar {
@@ -64,7 +64,7 @@
 }
 
 #nav_page_button {
-  background-color: #332D2D;
+  background-color: #212529;
   border: 1px solid white;
   border-radius: 5px;
   color: white;
@@ -75,34 +75,19 @@
 
 #nav_page_button:hover {
   background-color: white;
-  border: 1px solid #332D2D;
+  border: 1px solid #212529;
   border-radius: 5px;
-  color: #332D2D;
+  color: #212529;
 }
 
 .in_text_link {
-  color: black;
+  color: #212529;
 }
 
 
-#suggestion_status_red {
-  background-color: red;
+.suggestion_status{
   width: 100%;
-}
-
-#suggestion_status_green {
-  background-color: green;
-  width: 100%;
-}
-
-#suggestion_status_blue {
-  background-color: blue;
-  width: 100%;
-}
-
-#suggestion_status_yellow {
-  background-color: yellow;
-  width: 100%;
+  cursor: initial;
 }
 
 #comment {
@@ -112,4 +97,8 @@
 
 #hero_text {
   text-align: center;
+}
+
+.row {
+  margin-top: 5px;
 }

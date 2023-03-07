@@ -13,12 +13,9 @@
             {% csrf_token %}
             <p class="fst-italic fw-lighter"> Images should keep a height/width-ratio of 2/3 and be at least 600px wide.<br>Images may be edited by administrators.</p>
             <br>
-            <button type="submit">Submit me</button>
+            <button type="submit" class="btn btn-dark">Submit</button>
         </form>
     </div>
-        <br>
-        <br>
-        <br>
         <h2>Your suggestions</h2>
         <div class="card-group">
         {% for suggestion in suggestions %}
@@ -30,31 +27,26 @@
                 <div class="card-body">
                     <h5 class="card-title">{{suggestion.name}}</h5>
                     <p class="card-text"><small class="text-white">{{suggestion.appears_on}}</small></p>
-                    
-                    <a href="{% url 'swordfighter_detail' suggestion.slug %}" class="swordfighter-link">
-                        <button>View page</button>
-                    </a>
-                    
+                    <a href="{% url 'swordfighter_detail' suggestion.slug %}" class="btn btn-light btn-sm">View page</a>
                     {% if suggestion.status == 0 %}
-                    <p id="suggestion_status_blue" class="card-text"><small class="text-white">Pending approval</small></p>
-                    <form action="{% url 'delete' suggestion.slug %}" method="get">
-                        {% csrf_token %}
-                        <button type="submit">Delete</button>
-                    </form>
-                    <form action="{% url 'edit' suggestion.slug %}" method="get">
-                        {% csrf_token %}
-                        <button type="submit">Edit</button>
-                    </form>
+                        <a href="{% url 'delete' suggestion.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'edit' suggestion.slug %}" class="btn btn-warning btn-sm">Edit</a>
+                        <div class="row">
+                            <p class="btn btn-info suggestion_status btn-sm">Pending approval</p>
+                        </div>
                     {% elif suggestion.status == 1 %}
-                    <p id="suggestion_status_green" class="card-text"><small class="text-white">Published</small></p>
+                        <div class="row">
+                            <p class="btn btn-success suggestion_status btn-sm">Published</p>
+                        </div>
                     {% elif suggestion.status == 2 %}
-                    <p id="suggestion_status_yellow" class="card-text"><small class="text-white">Published with edits</small></p>
+                        <div class="row">
+                            <p class="btn btn-success suggestion_status btn-sm">Published with edits</p>
+                        </div>
                     {% else %}
-                    <p id="suggestion_status_red" class="card-text"><small class="text-white">Disapproved</small></p>
-                    <form action="{% url 'delete' suggestion.slug %}" method="get">
-                        {% csrf_token %}
-                        <button type="submit">Delete</button>
-                    </form>
+                        <div class="row">
+                            <p class="btn btn-success suggestion_status btn-sm">Disapproved</p>
+                        </div>
+                        <a href="{% url 'delete' suggestion.slug %}" class="btn btn-danger btn-sm">Delete</a>
                     {% endif %}
                 </div>
             </div>
@@ -68,8 +60,7 @@
         </h2>
         <form method="post" enctype="multipart/form-data" disabled>
             {{ swordfighter_form.as_p }}
-            {% csrf_token %}
-            <a href=" {% url 'account_login' %}">Sign in</a>
+            <a href=" {% url 'account_login' %}" class="btn btn-dark">Sign in</a>
         </form>
     </div>
     {% endif %}
