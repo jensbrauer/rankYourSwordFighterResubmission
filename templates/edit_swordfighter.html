@@ -9,9 +9,9 @@
         <form method="post" enctype="multipart/form-data">
             {{ edit_form.as_p }}
             {% csrf_token %}
-            <button type="submit">Submit me</button>
+            <button class="btn btn-danger" type="submit">Submit me</button>
         </form>
-        <p><a href="{% url 'ranking' %}">Or click here, to get back to ranking list.</a></p>
+        <a href="{% url 'contribute' %}" class="btn btn-dark">Or click here, to get back to your suggestions.</a>
     </div>
 </div>
 {%endblock%}
