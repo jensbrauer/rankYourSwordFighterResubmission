@@ -5,6 +5,8 @@ from django.db.models import Count
 from .models import Swordfighter, Comment, User
 from .forms import SwordfighterForm, CommentForm
 from django.db.models import Q
+from django.contrib import messages
+
 
 class Helper():
     def user_permitted(self, request, swordfighter):
@@ -34,8 +36,6 @@ class Helper():
         return upvoted_fighters
 
 
-
-
 class LandingPage(View):
     def get(self, request):
         return render(
@@ -46,7 +46,8 @@ class LandingPage(View):
 
 class SwordfighterList(View, Helper):
     def get(self, request):
-        swordfighters = Swordfighter.objects.filter(Q(status=1) | Q(status=2)).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
+        queryset = Swordfighter.objects.filter(Q(status=1) | Q(status=2))
+        swordfighters = queryset.annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
         current_user = self.request.user.id
         upvoted_fighters = self.check_if_upvoted(current_user, swordfighters)
 
@@ -75,10 +76,12 @@ class SwordfighterDetail(View, Helper):
 
         swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
         current_user = request.user
+
         flagged_comments = []
         for comment in swordfighter_comments:
             if comment.flags.filter(id=self.request.user.id):
                 flagged_comments.append(comment.id)
+
         if request.user.is_authenticated:
             button_name='Submit'
         else:
@@ -99,9 +102,9 @@ class SwordfighterDetail(View, Helper):
                 "is_upvoted": is_upvoted,
             }
         )
-    
+
     def post(self, request, slug, *args, **kwargs):
-        
+
         if not request.user.is_authenticated:
             return redirect(reverse('account_login'))
 
@@ -132,9 +135,11 @@ class SwordfighterDetail(View, Helper):
             comment = comment_form.save(commit=False)
             comment.swordfighter = swordfighter
             comment = comment_form.save()
+            messages.success(request, f"Your comment was published.")
         else:
             comment_form = CommentForm()
-            
+            messages.error(request, f"Your comment was not published.")
+
         comments = Comment.objects.filter(swordfighter=swordfighter)
 
         return render(
@@ -151,28 +156,28 @@ class SwordfighterDetail(View, Helper):
                 "is_draft": is_draft,
             }
         )
- 
- 
+
 
 class SwordfighterUpvote(View, Helper):
     def post(self, request, slug):
         if not request.user.is_authenticated:
             return redirect(reverse('account_login'))
         swordfighter = get_object_or_404(Swordfighter, slug=slug)
+
         if self.check_if_draft(swordfighter):
             return render(
                 request,
                 '403.html'
             )
 
-
         if swordfighter.upvotes.filter(id=request.user.id).exists():
             swordfighter.upvotes.remove(request.user)
+            messages.success(request, f"You removed your upvote for {swordfighter.name}.")
         else:
             swordfighter.upvotes.add(request.user)
-            
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            messages.success(request, f"You successfully upvoted {swordfighter.name}.")
 
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class Contribute(View, Helper):
@@ -182,10 +187,9 @@ class Contribute(View, Helper):
             button_name = 'Log in'
         else:
             button_name = 'Submit'
-        
+
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
         render_suggestions = self.queryset_not_empty(suggestions)
-
 
         return render(
             request,
@@ -211,6 +215,7 @@ class Contribute(View, Helper):
             swordfighter_form.instance.suggested_by = request.user.username
             swordfighter_form.instance.slug = swordfighter_form.cleaned_data['name'].replace(" ", "_")
             swordfighter = swordfighter_form.save()
+            messages.success(request, f"You successfully added {swordfighter.name}.")
         else:
             swordfighter_form = SwordfighterForm()
 
@@ -244,17 +249,16 @@ class Delete_swordfighter(View, Helper):
                 "swordfighter": swordfighter
             }
         )
-    
+
     def post(self, request, slug):
         instance = Swordfighter.objects.get(slug=slug)
+        messages.success(request, f"Your suggestion for {instance.name}, has been deleted.")
         instance.delete()
         return redirect('contribute')
-    
-
 
 
 class edit_swordfighter(View, Helper):
-    
+
     def get(self, request, slug):
 
         swordfighter = Swordfighter.objects.get(slug=slug)
@@ -270,31 +274,33 @@ class edit_swordfighter(View, Helper):
                 "swordfighter": swordfighter
             }
         )
-    
+
     def post(self, request, slug):
         swordfighter = Swordfighter.objects.get(slug=slug)
         submit_form = SwordfighterForm(request.POST, request.FILES, instance=swordfighter)
         submit_form.save()
+        messages.success(request, f"Your changes to {swordfighter.name}, have been saved.")
         return redirect('contribute')
 
 
 class FlagComment(View):
-    
+
     def post(self, request, id, *args, **kwargs):
         comment = Comment.objects.get(id=id)
         if comment.flags.filter(id=request.user.id).exists():
             comment.flags.remove(request.user)
+            messages.success(request, f"The comment was unflagged.")
         else:
             comment.flags.add(request.user)
+            messages.success(request, f"The comment was flagged.")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class DeleteComment(View):
-    
+
     def post(self, request, id):
         instance = Comment.objects.get(id=id)
         instance.delete()
+        messages.success(request, f"Your comment was deleted.")
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-

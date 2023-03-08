@@ -36,8 +36,13 @@ hr {
   margin: 5px;
 }
 
-.container {
-  padding-top: 60px;
+#content-area {
+  position: absolute;
+  top: 60px;
+  bottom: 2px;
+  left: 0px;
+  right: 0px;
+  overflow: auto;
 }
 
 #fighter-header {
