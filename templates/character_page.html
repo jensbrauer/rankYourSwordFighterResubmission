@@ -14,60 +14,66 @@
         <h2>{{swordfighter.name}}, {{swordfighter.number_of_upvotes}}</h2>
         <h3>{{swordfighter.appears_on}}</h3>
         <p>{{swordfighter.description}}</p>
+        {% if not is_draft %}
             <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
                 {% csrf_token %}
             <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}" class="btn btn-light">upvote</button>
             </form>
+        {% else %}
+            <a href="{% url 'contribute' %}#suggestions_list" class="btn btn-light">Return</a>
+        {% endif %}
     </div>
 </div>
 
 <!-- Commentform here -->
-<div class="card" id="comment-section">
-        <div class="card">
-            <div class="card-body">
-                <p>What do you think about {{ swordfighter.name }}</p>
-                <form method="post">
-                    {{ comment_form.content }}
-                    {% if user.is_authenticated %}
-                        {% csrf_token %}
-                        <button type="submit">{{button_name}}</button>
-                    {% else %}
-                        <a href="{% url 'account_login' %}" class="btn btn-dark">{{button_name}}</a>
-                    {% endif %}
-                </form>
+{% if not is_draft %}
+    <div class="card" id="comment-section">
+            <div class="card">
+                <div class="card-body">
+                    <p>What do you think about {{ swordfighter.name }}</p>
+                    <form method="post">
+                        {{ comment_form.content }}
+                        {% if user.is_authenticated %}
+                            {% csrf_token %}
+                            <button type="submit">{{button_name}}</button>
+                        {% else %}
+                            <a href="{% url 'account_login' %}" class="btn btn-dark">{{button_name}}</a>
+                        {% endif %}
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="card">
-                {% for comment in comments %}
-                    <div class="card text-dark bg-light mb-1">
-                        <div class="card-header">
-                            {{comment.submitted_on_date}}
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{comment.submitted_by}}</h5>
-                            <p class="card-text"><small>{{comment.content}}</small></p>
-                            {% if user.is_authenticated %}
-                                {% if comment.submitted_by == current_user.username %}
-                                    <form action="{% url 'delete_comment' comment.id %}" method="POST">
-                                        {% csrf_token %}
-                                        <button type="submit">Delete</button>
-                                    </form>
-                                {% else %}
-                                    <form class="d-inline" action="{% url 'flag_comment' comment.id %}" method="POST">
-                                        {% csrf_token %}
-                                        {% if comment.id in flagged_comments %}
-                                            <button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-dark btn-sm">Flagged</button>
-                                        {% else %}
-                                            <button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-danger btn-sm">flag this comment</button>
-                                        {% endif %}
-                                    </form>
+            <div class="card">
+                    {% for comment in comments %}
+                        <div class="card text-dark bg-light mb-1">
+                            <div class="card-header">
+                                {{comment.submitted_on_date}}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{comment.submitted_by}}</h5>
+                                <p class="card-text"><small>{{comment.content}}</small></p>
+                                {% if user.is_authenticated %}
+                                    {% if comment.submitted_by == current_user.username %}
+                                        <form action="{% url 'delete_comment' comment.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                    {% else %}
+                                        <form class="d-inline" action="{% url 'flag_comment' comment.id %}" method="POST">
+                                            {% csrf_token %}
+                                            {% if comment.id in flagged_comments %}
+                                                <button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-dark btn-sm">Flagged</button>
+                                            {% else %}
+                                                <button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-danger btn-sm">flag this comment</button>
+                                            {% endif %}
+                                        </form>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-        </div>
-</div>
+                    {% endfor %}
+            </div>
+    </div>
+{% endif %}
 
 {%endblock%}
 

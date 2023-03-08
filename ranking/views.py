@@ -20,6 +20,12 @@ class Helper():
         else:
             return False
 
+    def check_if_draft(self, swordfighter):
+        if swordfighter.status == 1 or swordfighter.status == 2:
+            return False
+        else:
+            return True
+
 
 
 class LandingPage(View):
@@ -59,6 +65,8 @@ class SwordfighterDetail(View, Helper):
                 request,
                 '403.html'
             )
+        is_draft = self.check_if_draft(swordfighter)
+
         swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
         current_user = request.user
         flagged_comments = []
@@ -81,6 +89,7 @@ class SwordfighterDetail(View, Helper):
                 "flagged_comments": flagged_comments,
                 "current_user": current_user,
                 "button_name": button_name,
+                "is_draft": is_draft,
             }
         )
     
@@ -90,6 +99,14 @@ class SwordfighterDetail(View, Helper):
             return redirect(reverse('account_login'))
 
         swordfighter = get_object_or_404(self.queryset, slug=slug)
+        if self.check_if_draft(swordfighter):
+            return render(
+                request,
+                '403.html'
+            )
+        else:
+            is_draft = False
+
         comment_form = CommentForm(request.POST)
         swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
         current_user = request.user
@@ -124,16 +141,23 @@ class SwordfighterDetail(View, Helper):
                 "flagged_comments": flagged_comments,
                 "current_user": current_user,
                 "button_name": button_name,
+                "is_draft": is_draft,
             }
         )
  
  
 
-class SwordfighterUpvote(View):
+class SwordfighterUpvote(View, Helper):
     def post(self, request, slug):
         if not request.user.is_authenticated:
             return redirect(reverse('account_login'))
         swordfighter = get_object_or_404(Swordfighter, slug=slug)
+        if self.check_if_draft(swordfighter):
+            return render(
+                request,
+                '403.html'
+            )
+
 
         if swordfighter.upvotes.filter(id=request.user.id).exists():
             swordfighter.upvotes.remove(request.user)
