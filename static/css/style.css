@@ -9,6 +9,9 @@
   background-repeat: no-repeat;
   background-position: center center;
 }
+#upvote_counter_char_page {
+  margin: 10px 0 5px;
+}
 
 #list_img {
   border: 1px solid #212529;

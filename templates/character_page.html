@@ -10,14 +10,22 @@
         </div>
     </div>
     <div id="fighter-header-text" class="col-md-6">
-                <h2>{{swordfighter.name}}, {{swordfighter.number_of_upvotes}}</h2>
-                <h3>{{swordfighter.appears_on}}</h3>
+                <h2>{{swordfighter.name}}</h2>
+                <h5>{{swordfighter.appears_on}}</h5>
                 <p class="lh-sm fs-6"><small>{{swordfighter.description}}</small></p>
                 {% if not is_draft %}
-                    <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
-                        {% csrf_token %}
-                    <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}" class="btn btn-light">upvote</button>
-                    </form>
+                    <p id="upvote_counter_char_page">{{swordfighter.number_of_upvotes}} upvotes</p>
+                    {% if is_upvoted %}
+                        <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-secondary me-md-2" type="submit" name="swordfighter_id" value="{{swordfighter.slug}}">undo upvote</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'swordfighter_upvote' swordfighter.slug %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" name="swordfighter_id" value="{{swordfighter.slug}}" class="btn btn-light">upvote</button>
+                        </form>
+                    {% endif %}
                 {% else %}
                     <a href="{% url 'contribute' %}#suggestions_list" class="btn btn-light">Return</a>
                 {% endif %}

@@ -25,6 +25,14 @@ class Helper():
             return False
         else:
             return True
+            
+    def check_if_upvoted(self, current_user, swordfighters):
+        upvoted_fighters = []
+        for swordfighter in swordfighters:
+            if swordfighter.upvotes.filter(id=current_user).exists():
+                upvoted_fighters.append(swordfighter.name)
+        return upvoted_fighters
+
 
 
 
@@ -36,14 +44,11 @@ class LandingPage(View):
         )
 
 
-class SwordfighterList(View):
+class SwordfighterList(View, Helper):
     def get(self, request):
         swordfighters = Swordfighter.objects.filter(Q(status=1) | Q(status=2)).annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
         current_user = self.request.user.id
-        upvoted_fighters = []
-        for swordfighter in swordfighters:
-            if swordfighter.upvotes.filter(id=current_user).exists():
-                upvoted_fighters.append(swordfighter.name)
+        upvoted_fighters = self.check_if_upvoted(current_user, swordfighters)
 
         return render(
             request,
@@ -66,6 +71,7 @@ class SwordfighterDetail(View, Helper):
                 '403.html'
             )
         is_draft = self.check_if_draft(swordfighter)
+        is_upvoted = swordfighter.upvotes.filter(id=request.user.id).exists()
 
         swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
         current_user = request.user
@@ -90,6 +96,7 @@ class SwordfighterDetail(View, Helper):
                 "current_user": current_user,
                 "button_name": button_name,
                 "is_draft": is_draft,
+                "is_upvoted": is_upvoted,
             }
         )
     
