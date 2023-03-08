@@ -115,6 +115,9 @@ hr {
 #hero_text {
   text-align: center;
 }
+#hero_info .card-body {
+  padding: 10px;
+}
 
 .row {
   margin-top: 5px;
