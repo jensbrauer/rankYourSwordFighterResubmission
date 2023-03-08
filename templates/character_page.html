@@ -22,49 +22,52 @@
 </div>
 
 <!-- Commentform here -->
-{% if user.is_authenticated %}
-<form method="post">
-    {{ comment_form.content }}
-    {% csrf_token %}
-    <button type="submit">{{button_name}}</button>
-</form>
-{% else %}
-<form method="post">
-    {{ comment_form.content }}
-    {% csrf_token %}
-    <a href="{% url 'account_login' %}" class="btn btn-dark">{{button_name}}</a>
-</form>
-{% endif %}
-{% for comment in comments %}
-<div class="row">
-    <div class="card text-dark bg-light mb-3">
-        <div class="card-header">
-            {{comment.submitted_on_date}}
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">{{comment.submitted_by}}</h5>
-            <p class="card-text">{{comment.content}}</p>
-            {% if user.is_authenticated %}
-                {% if comment.submitted_by == current_user.username %}
-                    <form action="{% url 'delete_comment' comment.id %}" method="POST">
+<div class="card" id="comment-section">
+        <div class="card">
+            <div class="card-body">
+                <p>What do you think about {{ swordfighter.name }}</p>
+                <form method="post">
+                    {{ comment_form.content }}
+                    {% if user.is_authenticated %}
                         {% csrf_token %}
-                        <button type="submit">Delete</button>
-                    </form>
-                {% else %}
-                    <form class="d-inline" action="{% url 'flag_comment' comment.id %}" method="POST">
-                        {% csrf_token %}
-                        {% if comment.id in flagged_comments %}
-                            <button type="submit" name="comment_id" value="{{comment.id}}" class="btn-like">Flagged</button>
-                        {% else %}
-                            <button type="submit" name="comment_id" value="{{comment.id}}" class="btn-like">flag this comment</button>
-                        {% endif %}
-                    </form>
-                {% endif %}
-            {% endif %}
+                        <button type="submit">{{button_name}}</button>
+                    {% else %}
+                        <a href="{% url 'account_login' %}" class="btn btn-dark">{{button_name}}</a>
+                    {% endif %}
+                </form>
+            </div>
         </div>
-    </div>
+        <div class="card">
+                {% for comment in comments %}
+                    <div class="card text-dark bg-light mb-1">
+                        <div class="card-header">
+                            {{comment.submitted_on_date}}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{comment.submitted_by}}</h5>
+                            <p class="card-text"><small>{{comment.content}}</small></p>
+                            {% if user.is_authenticated %}
+                                {% if comment.submitted_by == current_user.username %}
+                                    <form action="{% url 'delete_comment' comment.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                {% else %}
+                                    <form class="d-inline" action="{% url 'flag_comment' comment.id %}" method="POST">
+                                        {% csrf_token %}
+                                        {% if comment.id in flagged_comments %}
+                                            <button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-dark btn-sm">Flagged</button>
+                                        {% else %}
+                                            <button type="submit" name="comment_id" value="{{comment.id}}" class="btn btn-danger btn-sm">flag this comment</button>
+                                        {% endif %}
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
 </div>
-{% endfor %}
 
 {%endblock%}
 

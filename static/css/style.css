@@ -108,3 +108,21 @@
   color: #212529;
   border: 1px solid #212529;
 }
+
+#comment-section {
+  max-width: 686px;
+  margin: auto;
+  margin-top: 10px;
+}
+#comment-section .card-body {
+  padding: 10px;
+}
+#comment-section .card-header {
+  padding: 5px 10px;
+}
+#comment-section .card-title {
+  margin: 0 0 5px;
+}
+#comment-section .card-text {
+  margin: 0 0 10px;
+}
