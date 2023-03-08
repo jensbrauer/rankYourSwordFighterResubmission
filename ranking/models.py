@@ -10,7 +10,7 @@ class Swordfighter(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     appears_on = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.CharField(max_length=255)
     profile_img = CloudinaryField('image', default='placeholder')
     upvotes = models.ManyToManyField(User, related_name="swordfighter_upvotes", blank=True)
     status = models.IntegerField(choices=STATUS, default=0)
