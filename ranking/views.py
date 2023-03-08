@@ -7,12 +7,19 @@ from .forms import SwordfighterForm, CommentForm
 from django.db.models import Q
 
 class Helper():
-    def _user_permitted(self, request, swordfighter):
+    def user_permitted(self, request, swordfighter):
         if not request.user.username == swordfighter.suggested_by:
             if not swordfighter.status == 1:
                 if not swordfighter.status == 2:
                     return False
         return True
+    
+    def queryset_not_empty(self, queryset):
+        if queryset.count() > 0:
+            return True
+        else:
+            return False
+
 
 
 class LandingPage(View):
@@ -47,7 +54,7 @@ class SwordfighterDetail(View, Helper):
 
     def get(self, request, slug, *args, **kwargs):
         swordfighter = get_object_or_404(self.queryset, slug=slug)
-        if not self._user_permitted(request, swordfighter):
+        if not self.user_permitted(request, swordfighter):
             return render(
                 request,
                 '403.html'
@@ -137,7 +144,7 @@ class SwordfighterUpvote(View):
 
 
 
-class Contribute(View):
+class Contribute(View, Helper):
 
     def get(self, request):
         if not request.user.is_authenticated:
@@ -146,14 +153,17 @@ class Contribute(View):
             button_name = 'Submit'
         
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
-    
+        render_suggestions = self.queryset_not_empty(suggestions)
+
+
         return render(
             request,
             "contribute.html",
             {
                 "swordfighter_form": SwordfighterForm(),
                 "suggestions": suggestions,
-                "button_name": button_name
+                "button_name": button_name,
+                "render_suggestions": render_suggestions,
             }
         )
     
@@ -162,6 +172,7 @@ class Contribute(View):
             return redirect(reverse('account_login'))
 
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
+        render_suggestions = self.queryset_not_empty(suggestions)
         swordfighter_form = SwordfighterForm(request.POST, request.FILES)
         button_name = 'Submit'
 
@@ -178,24 +189,18 @@ class Contribute(View):
             {
                 "swordfighter_form": SwordfighterForm(),
                 "suggestions": suggestions,
-                "button_name": button_name
+                "button_name": button_name,
+                "render_suggestions": render_suggestions,
             }
         )
     
 
-class Delete_swordfighter(View):
-
-    def __user_permitted(self, request, swordfighter):
-        if not request.user.username == swordfighter.suggested_by:
-            if not swordfighter.status == 1:
-                if not swordfighter.status == 2:
-                    return False
-        return True
+class Delete_swordfighter(View, Helper):
 
     def get(self, request, slug, *args, **kwargs):
         queryset = Swordfighter.objects
         swordfighter = get_object_or_404(queryset, slug=slug)
-        if not self.__user_permitted(request, swordfighter):
+        if not self.user_permitted(request, swordfighter):
             return render(
                 request,
                 '403.html'
@@ -222,7 +227,7 @@ class edit_swordfighter(View, Helper):
     def get(self, request, slug):
 
         swordfighter = Swordfighter.objects.get(slug=slug)
-        if not self._user_permitted(request, swordfighter):
+        if not self.user_permitted(request, swordfighter):
             return render(request,'403.html')
 
         edit_form = SwordfighterForm(instance=swordfighter)

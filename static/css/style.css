@@ -16,7 +16,7 @@
 .card {
   border: none;
   background-color: #212529;
-  color: white;
+  color: #F8F9FA;
   margin: 5px;
 }
 
@@ -101,4 +101,10 @@
 
 .row {
   margin-top: 5px;
+}
+
+.light-card {
+  background-color: #F8F9FA;
+  color: #212529;
+  border: 1px solid #212529;
 }

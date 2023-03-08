@@ -16,43 +16,49 @@
             <button type="submit" class="btn btn-dark">Submit</button>
         </form>
     </div>
-        <h2>Your suggestions</h2>
-        <div class="card-group">
-        {% for suggestion in suggestions %}
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card"  id="swordfighter-card">
-                <div class="card-body ratio ratio-4x3">
-                    <img id="list_img" class="card-img-top" src="{{ suggestion.profile_img.url }}" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{suggestion.name}}</h5>
-                    <p class="card-text"><small class="text-white">{{suggestion.appears_on}}</small></p>
-                    <a href="{% url 'swordfighter_detail' suggestion.slug %}" class="btn btn-light btn-sm">View page</a>
-                    {% if suggestion.status == 0 %}
-                        <a href="{% url 'delete' suggestion.slug %}" class="btn btn-danger btn-sm">Delete</a>
-                        <a href="{% url 'edit' suggestion.slug %}" class="btn btn-warning btn-sm">Edit</a>
-                        <div class="row">
-                            <p class="btn btn-info suggestion_status btn-sm">Pending approval</p>
+    {% if render_suggestions %}
+        <div class="card light-card">
+            <div class="card-body">
+                <h2>Your suggestions</h2>
+                <div class="card-group">
+                    {% for suggestion in suggestions %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card"  id="swordfighter-card">
+                            <div class="card-body ratio ratio-4x3">
+                                <img id="list_img" class="card-img-top" src="{{ suggestion.profile_img.url }}" alt="Card image cap">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{suggestion.name}}</h5>
+                                <p class="card-text"><small class="text-white">{{suggestion.appears_on}}</small></p>
+                                <a href="{% url 'swordfighter_detail' suggestion.slug %}" class="btn btn-light btn-sm">View page</a>
+                                {% if suggestion.status == 0 %}
+                                    <a href="{% url 'delete' suggestion.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="{% url 'edit' suggestion.slug %}" class="btn btn-warning btn-sm">Edit</a>
+                                    <div class="row">
+                                        <p class="btn btn-info suggestion_status btn-sm">Pending approval</p>
+                                    </div>
+                                {% elif suggestion.status == 1 %}
+                                    <div class="row">
+                                        <p class="btn btn-success suggestion_status btn-sm">Published</p>
+                                    </div>
+                                {% elif suggestion.status == 2 %}
+                                    <div class="row">
+                                        <p class="btn btn-success suggestion_status btn-sm">Published with edits</p>
+                                    </div>
+                                {% else %}
+                                    <div class="row">
+                                        <p class="btn btn-success suggestion_status btn-sm">Disapproved</p>
+                                    </div>
+                                    <a href="{% url 'delete' suggestion.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                                {% endif %}
+                            </div>
                         </div>
-                    {% elif suggestion.status == 1 %}
-                        <div class="row">
-                            <p class="btn btn-success suggestion_status btn-sm">Published</p>
-                        </div>
-                    {% elif suggestion.status == 2 %}
-                        <div class="row">
-                            <p class="btn btn-success suggestion_status btn-sm">Published with edits</p>
-                        </div>
-                    {% else %}
-                        <div class="row">
-                            <p class="btn btn-success suggestion_status btn-sm">Disapproved</p>
-                        </div>
-                        <a href="{% url 'delete' suggestion.slug %}" class="btn btn-danger btn-sm">Delete</a>
-                    {% endif %}
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-        {% endfor %}
-        </div>
+    {% endif %}
     {% else %}
     <div class="col-sm-8 col-md-8 col-lg-6 mx-auto">
         <h2>
