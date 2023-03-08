@@ -9,9 +9,15 @@
   background-repeat: no-repeat;
   background-position: center center;
 }
-#upvote_counter_char_page {
-  margin: 10px 0 5px;
+
+hr {
+  margin: 10px 0px;
 }
+
+#upvote_counter_char_page{
+  margin: 0;
+}
+
 
 #list_img {
   border: 1px solid #212529;
@@ -44,6 +50,7 @@
   color: white;
   padding: 16px;
 }
+
 
 #back-up-link {
   text-align: center;

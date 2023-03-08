@@ -12,7 +12,11 @@
                 <form method="post" enctype="multipart/form-data">
                     {{ swordfighter_form.as_p }}
                     {% csrf_token %}
-                    <p class="fst-italic fw-lighter"> Images should keep a height/width-ratio of 2/3 and be at least 600px wide.<br>Images may be edited by administrators.</p>
+                    <p class="fst-italic fw-lighter">
+                        Images should keep a height/width-ratio of 3/4 and be at least 600px wide.<br>
+                        Images may be edited by administrators.<br>
+                        <strong>After you've submitted, you can preview and edit below.</strong>
+                    </p>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
