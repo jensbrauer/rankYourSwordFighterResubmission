@@ -4,13 +4,14 @@
 <div class="row">
     <div class="col-sm-8 col-md-8 col-lg-6 mx-auto">
         <h2>
-            edit {{ swordfighter.name }}
+            Edit {{ swordfighter.name }}
         </h2>
         <form method="post" enctype="multipart/form-data">
             {{ edit_form.as_p }}
             {% csrf_token %}
-            <button class="btn btn-danger" type="submit">Submit me</button>
+            <button class="btn btn-primary" type="submit">Save changes</button>
         </form>
+        <hr>
         <a href="{% url 'contribute' %}" class="btn btn-dark">Or click here, to get back to your suggestions.</a>
     </div>
 </div>

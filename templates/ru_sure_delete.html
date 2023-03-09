@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="row" id="error_page">
-    <h2>
-        Are you sure you want to delete {{ swordfighter.name }}?
-    </h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input class="btn btn-danger" type="submit" value="Delete">
-    </form>
-    <a class="btn btn-dark" href="{% url 'contribute' %}">Click here, to get back to you suggestions.</a>
+<div class="card light-card">
+    <div class="card-body">
+        <h2>
+            Are you sure you want to delete {{ swordfighter.name }}?
+        </h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input class="btn btn-danger" type="submit" value="Delete">
+        </form>
+        <hr>
+        <a class="btn btn-dark" href="{% url 'contribute' %}">Click here, to get back to you suggestions.</a>
+    </div>
 </div>
+
 {%endblock%}
