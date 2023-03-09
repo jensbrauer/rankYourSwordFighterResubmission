@@ -72,8 +72,7 @@ hr {
   color: #FBFBFB;
 }
 .swordfighter-link:hover {
-  text-decoration: none;
-  color:#DC3545;
+  text-decoration:underline;
 }
 
 .navbar {
