@@ -9,13 +9,22 @@ from django.contrib import messages
 
 
 class Helper():
-    def user_permitted(self, request, swordfighter):
+    def user_permitted_to_view(self, request, swordfighter):
         if not request.user.username == swordfighter.suggested_by:
             if not swordfighter.status == 1:
                 if not swordfighter.status == 2:
                     return False
         return True
-    
+
+
+    def user_permitted_to_update(self, request, swordfighter):
+        if request.user.username == swordfighter.suggested_by:
+            if swordfighter.status == 0:
+                if swordfighter.status == 3:
+                    return True
+        return False
+
+
     def queryset_not_empty(self, queryset):
         if queryset.count() > 0:
             return True
@@ -67,7 +76,7 @@ class SwordfighterDetail(View, Helper):
 
     def get(self, request, slug, *args, **kwargs):
         swordfighter = get_object_or_404(self.queryset, slug=slug)
-        if not self.user_permitted(request, swordfighter):
+        if not self.user_permitted_to_view(request, swordfighter):
             return render(
                 request,
                 '403.html'
@@ -237,7 +246,7 @@ class Delete_swordfighter(View, Helper):
     def get(self, request, slug, *args, **kwargs):
         queryset = Swordfighter.objects
         swordfighter = get_object_or_404(queryset, slug=slug)
-        if not self.user_permitted(request, swordfighter):
+        if not self.user_permitted_to_update(request, swordfighter):
             return render(
                 request,
                 '403.html'
@@ -253,6 +262,11 @@ class Delete_swordfighter(View, Helper):
 
     def post(self, request, slug):
         instance = Swordfighter.objects.get(slug=slug)
+        if not self.user_permitted_to_update(request, swordfighter):
+            return render(
+                request,
+                '403.html'
+            )
         messages.success(request, f"Your suggestion for {instance.name}, has been deleted.")
         instance.delete()
         return redirect('contribute')
@@ -263,7 +277,7 @@ class edit_swordfighter(View, Helper):
     def get(self, request, slug):
 
         swordfighter = Swordfighter.objects.get(slug=slug)
-        if not self.user_permitted(request, swordfighter):
+        if not self.user_permitted_to_update(request, swordfighter):
             return render(request,'403.html')
 
         edit_form = SwordfighterForm(instance=swordfighter)
@@ -278,6 +292,8 @@ class edit_swordfighter(View, Helper):
 
     def post(self, request, slug):
         swordfighter = Swordfighter.objects.get(slug=slug)
+        if not self.user_permitted_to_update(request, swordfighter):
+            return render(request,'403.html')
         submit_form = SwordfighterForm(request.POST, request.FILES, instance=swordfighter)
         submit_form.save()
         messages.success(request, f"Your changes to {swordfighter.name}, have been saved.")
