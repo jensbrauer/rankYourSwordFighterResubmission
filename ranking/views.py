@@ -47,7 +47,8 @@ class LandingPage(View):
 class SwordfighterList(View, Helper):
     def get(self, request):
         queryset = Swordfighter.objects.filter(Q(status=1) | Q(status=2))
-        swordfighters = queryset.annotate(upvote_count=Count('upvotes')).order_by('-upvote_count')
+        annotated_qs = queryset.annotate(upvote_count=Count('upvotes'))
+        swordfighters = annotated_qs.order_by('-upvote_count')
         current_user = self.request.user.id
         upvoted_fighters = self.check_if_upvoted(current_user, swordfighters)
 
@@ -287,12 +288,11 @@ class FlagComment(View):
 
     def post(self, request, id, *args, **kwargs):
         comment = Comment.objects.get(id=id)
+        comment.flag(request.user)
         if comment.flags.filter(id=request.user.id).exists():
-            comment.flags.remove(request.user)
-            messages.success(request, f"The comment was unflagged.")
-        else:
-            comment.flags.add(request.user)
             messages.success(request, f"The comment was flagged.")
+        else:
+            messages.success(request, f"The comment was unflagged.")
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
