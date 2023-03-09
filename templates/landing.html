@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
   <div id="landing_hero" class="card text-bg-danger mb-3">
     <div class="row g-0">
@@ -26,7 +27,7 @@
         </div>
       </div>
       <div id="hero_img" class="col-6 col-md-8 col-lg-4 align-self-end mx-auto">
-        <img src="{% static 'rateyourswordfighter/static/images/heroimage.png' %}" class="img-fluid" alt="masked_swordfighter">
+        <img src="{% static '/images/heroimage.png' %}" class="img-fluid" alt="masked_swordfighter">
       </div>
     </div>
   </div>
