@@ -19,9 +19,8 @@ class Helper():
 
     def user_permitted_to_update(self, request, swordfighter):
         if request.user.username == swordfighter.suggested_by:
-            if swordfighter.status == 0:
-                if swordfighter.status == 3:
-                    return True
+            if swordfighter.status == 0 or swordfighter.status == 3:
+                return True
         return False
 
 
