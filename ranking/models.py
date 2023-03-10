@@ -6,6 +6,7 @@ from cloudinary.models import CloudinaryField
 SwordfighterSTATUS = ((0, 'Pending Approval'), (1, 'Published'), (2, 'Published with edit'), (3, 'Disapproved'))
 CommentSTATUS = ((0, 'Unmanaged'), (1, 'Approved'))
 
+
 class Swordfighter(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
@@ -16,13 +17,12 @@ class Swordfighter(models.Model):
     status = models.IntegerField(choices=SwordfighterSTATUS, default=0)
     suggested_by = models.CharField(max_length=100, default='admin')
 
-
     class meta:
         ordering = ['upvotes']
 
     def __str__(self):
         return self.name
-    
+
     def number_of_upvotes(self):
         return self.upvotes.count()
 
@@ -41,7 +41,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.submitted_by} on {self.submitted_on_date} - {self.content}"
-        
+
     def flag(self, user):
         if self.flags.filter(id=user.id).exists():
             self.flags.remove(user)
@@ -49,4 +49,3 @@ class Comment(models.Model):
             self.flags.add(user)
         self.num_flags = self.flags.count()
         self.save()
-

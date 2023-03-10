@@ -1,4 +1,7 @@
-# MANUAL TESTING ON DEPLOYD WEBSITE
+# MANUAL TESTING ON DEPLOYED WEBSITE
+### For live site see; [The Greatest Sword Fighter](https://rate-your-swordfighter.herokuapp.com/)
+
+The site has been thouroughly tested in a structured manual way. Thre scenarios where created to represent interaction on the site; The Visitor Scenario, The User Scenario and the Admin Scenario. All pages where tested and their features such as buttons, links etc where tested and evaluated.
 
 ## THE VISITOR SCENARIO
 

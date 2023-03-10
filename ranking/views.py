@@ -22,13 +22,12 @@ class Helper():
             if swordfighter.status == 0 or swordfighter.status == 3:
                 return True
         return False
-        
+
     def user_permitted_to_delete(self, request, swordfighter):
         if request.user.username == swordfighter.suggested_by:
             if swordfighter.status == 0 or swordfighter.status == 3:
                 return True
         return False
-
 
     def queryset_not_empty(self, queryset):
         if queryset.count() > 0:
@@ -41,15 +40,13 @@ class Helper():
             return False
         else:
             return True
-            
+
     def check_if_upvoted(self, current_user, swordfighters):
         upvoted_fighters = []
         for swordfighter in swordfighters:
             if swordfighter.upvotes.filter(id=current_user).exists():
                 upvoted_fighters.append(swordfighter.name)
         return upvoted_fighters
-
-
 
 
 class LandingPage(View):
@@ -91,7 +88,7 @@ class SwordfighterDetail(View, Helper):
         is_draft = self.check_if_draft(swordfighter)
         is_upvoted = swordfighter.upvotes.filter(id=request.user.id).exists()
 
-        swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
+        swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter)
         current_user = request.user
 
         flagged_comments = []
@@ -100,9 +97,9 @@ class SwordfighterDetail(View, Helper):
                 flagged_comments.append(comment.id)
 
         if request.user.is_authenticated:
-            button_name='Submit'
+            button_name = 'Submit'
         else:
-            button_name='Login to comment'
+            button_name = 'Login to comment'
 
         comments = Comment.objects.filter(swordfighter=swordfighter)
         return render(
@@ -135,7 +132,7 @@ class SwordfighterDetail(View, Helper):
             is_draft = False
 
         comment_form = CommentForm(request.POST)
-        swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter) 
+        swordfighter_comments = Comment.objects.filter(swordfighter=swordfighter)
         current_user = request.user
 
         flagged_comments = []
@@ -143,9 +140,9 @@ class SwordfighterDetail(View, Helper):
             if comment.flags.filter(id=self.request.user.id):
                 flagged_comments.append(comment.id)
         if request.user.is_authenticated:
-            button_name='Submit'
+            button_name = 'Submit'
         else:
-            button_name='Login to comment'
+            button_name = 'Login to comment'
 
         if comment_form.is_valid():
             comment_form.instance.submitted_by = request.user.username
@@ -162,7 +159,7 @@ class SwordfighterDetail(View, Helper):
         return render(
             request,
             "character_page.html",
-           {
+            {
                 "swordfighter": swordfighter,
                 "comments": comments,
                 "comment_form": CommentForm(),
@@ -218,7 +215,7 @@ class Contribute(View, Helper):
                 "render_suggestions": render_suggestions,
             }
         )
-    
+
     def post(self, request):
         if not request.user.is_authenticated:
             return redirect(reverse('account_login'))
@@ -233,7 +230,7 @@ class Contribute(View, Helper):
         else:
             swordfighter_form = SwordfighterForm()
             messages.error(request, f"The suggestion was not added, note that the name can only contain english letters.")
-        
+
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
         render_suggestions = self.queryset_not_empty(suggestions)
         button_name = 'Submit'
@@ -248,7 +245,7 @@ class Contribute(View, Helper):
                 "render_suggestions": render_suggestions,
             }
         )
-    
+
 
 class Delete_swordfighter(View, Helper):
 
@@ -287,7 +284,7 @@ class edit_swordfighter(View, Helper):
 
         swordfighter = Swordfighter.objects.get(slug=slug)
         if not self.user_permitted_to_update(request, swordfighter):
-            return render(request,'403.html')
+            return render(request, '403.html')
 
         edit_form = SwordfighterForm(instance=swordfighter)
         return render(
@@ -302,7 +299,7 @@ class edit_swordfighter(View, Helper):
     def post(self, request, slug):
         swordfighter = Swordfighter.objects.get(slug=slug)
         if not self.user_permitted_to_update(request, swordfighter):
-            return render(request,'403.html')
+            return render(request, '403.html')
 
         submit_form = SwordfighterForm(request.POST, request.FILES, instance=swordfighter)
         if submit_form.is_valid():
@@ -310,7 +307,7 @@ class edit_swordfighter(View, Helper):
             messages.success(request, f"Your changes to {swordfighter.name}, have been saved.")
         else:
             messages.error(request, f"NO CHANGES to {swordfighter.name}, try excluding special characters from the name.")
-        
+
         return redirect('contribute')
 
 

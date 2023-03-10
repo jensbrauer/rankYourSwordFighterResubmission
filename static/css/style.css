@@ -84,22 +84,7 @@ hr {
   text-align: center;
 }
 
-#nav_page_button {
-  background-color: #212529;
-  border: 1px solid white;
-  border-radius: 5px;
-  color: white;
-  transition: 0,1s;
-  padding-left: 6px;
-  margin: 0 5px 0 5px;
-}
 
-#nav_page_button:hover {
-  background-color: white;
-  border: 1px solid #212529;
-  border-radius: 5px;
-  color: #212529;
-}
 
 .in_text_link {
   color: #212529;
@@ -119,7 +104,7 @@ hr {
 #hero_text {
   text-align: center;
 }
-#hero_info .card-body {
+.hero_info .card-body {
   padding: 10px;
 }
 
@@ -149,4 +134,21 @@ hr {
 }
 #comment-section .card-text {
   margin: 0 0 5px;
+}
+
+.nav_page_button {
+  background-color: #212529;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  transition: 0.1s;
+  padding-left: 6px;
+  margin: 0 5px 0 5px;
+}
+
+.nav_page_button:hover {
+  background-color: white;
+  border: 1px solid #212529;
+  border-radius: 5px;
+  color: #212529;
 }

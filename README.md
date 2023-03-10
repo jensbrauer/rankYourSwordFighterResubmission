@@ -1,108 +1,94 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# The Rank Your Sword Fighter Project
 
-Welcome jensbrauer,
+The Rank Your Sword Fighter Project aims to create a user input based ranking of the greatest sword fighters in anime/manga. As characters in the different series are hard to compare, this aims to provide an expression of popular opinion about what sword fighter characters to keep an eye on as series progress if one is in to the genre. Furthermore, the website hopes to be a good way to introduce people to the genre as you can make more accurate guesses about what to forward to friends in order to spark interest, if you got some understanding of popular opinion.
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+![Responsice Mockup](https://github.com/jensbrauer/rateYourSwordfighter/blob/main/docs/mockup.PNG)
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **September 1, 2021**
+## Features 
 
-## Gitpod Reminders
+This page has an initial landing page, giving some explanation to the features you can expect to find and navigational links to go there. Also it is decorated with a cool image to set the mood for the experience.
+The navbar logo and the text provided is aimed to be somewhat self explanatory and navigational links are ment to be obvious at firsst glance.
+The page is meant to call to action and increase in value by user interaction.
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+### Existing Features
 
-`python3 -m http.server`
+- __Navigation Bar__
+  - Featured as a fixed item always displaying at the topp of the page, in order for the user to always have navigation options at hand.
 
-A blue button should appear to click: _Make Public_,
+- __The landing page__
+  - The landing page is mainly created to highlight the amazing artwork highlight the genre for the content.
+  - It also displays the features of the page, what the user can expect to find and is ment to call for action.
 
-Another blue button should appear to click: _Open Browser_.
+- __Ranking List__
+  - The ranking list is the main feature of the webpage. Accesible to visitors to view and users to interact with.
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+- __Individual Character Pages__
+  - In the individual characters pages, everyone can explore some more detailed information about the characters but most importantly acces the comment field where one can read about peoples qualitative description and thoughts about the character.
 
-A blue button should appear to click: _Make Public_,
 
-Another blue button should appear to click: _Open Browser_.
+- __Contribute Page__ 
+  - The contribute page is also a call to action feature where users are encouraged to upload suggestions for characters that they want featured in the ranking list. As characters and series are constantly developed, the feature should remain relevant.
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
 
-To log into the Heroku toolbelt CLI:
+### Features Left to Implement
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+- A feature scrapped in the planing process was the ability for users to upload "content" such as video material, artwork and other cool stuff related to the characters. This could be included in the character pages and add more user interaction as well as read-value.
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+## Testing 
 
-------
+The site has been thouroughly tested in a structured manual way. Thre scenarios where created to represent interaction on the site; The Visitor Scenario, The User Scenario and the Admin Scenario. All pages where tested and their features such as buttons, links etc where tested and evaluated.
+All tests and outcomes including bugs and fixes where documented seperatly and can be found [here!](https://github.com/jensbrauer/rateYourSwordfighter/blob/eaed5dd3abf7461c073be31517ea21a69d77a971/TEST.md)
 
-## Release History
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+### Validator Testing 
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
+- Lighthouse reports can be accessed in docs file
+  - ![Landingpage](https://github.com/jensbrauer/rateYourSwordfighter/blob/main/docs/mockup.PNG)
+  - ![Rankingpage](https://github.com/jensbrauer/rateYourSwordfighter/blob/main/docs/mockup.PNG)
+  - ![Contributepage](https://github.com/jensbrauer/rateYourSwordfighter/blob/main/docs/mockup.PNG)
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
+- HTML
+  - [W3C validator](https://validator.w3.org/nu) returned no errors.
+- CSS
+  - [(Jigsaw) validator](https://jigsaw.w3.org/css-validator/validator) returned no errors.
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+-PEP8 Validation
+  - [Code Institutes CI Python Linter, PEP8 heroku app](https://pep8ci.herokuapp.com/) returned som problems that was not addressed due to time constraints:
+    - ranking/views.py return 13 instances of line too long.
+    - ranking/urls.py return no errors.
+    - ranking/forms.py returned 15 errors related to white space and line to long.
+    - ranking/models.py returned 5 errors of line to long.
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
+### Unfixed Bugs
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+No bugs found during testing have been unfixed.
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
+## Deployment
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
+### The finalized version of the app was deployed on Heroku.
+#### Process step by step:
+- Clone this repository
+- Create a new app on heroku
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+- Set up config vars under settings;
+  - SECRET_KEY: (Your secret key)
+  - DATABASE_URL: (This should already exist with add on of postgres)
+  - CLOUNDINARY_URL: (cloudinary api url)
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+- Link the Heroku app to the repository
+- Under "Manual deploy", select main branch and press "Deploy Branch"
+- After the build is finished, a success message will be displayed together with a button to view to deployed app.
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
+This is the live link for the deployed project - https://rate-your-swordfighter.herokuapp.com/
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+## Credits 
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+### Media
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+- The landing page image used on the home page is from [Tyane Robinson](https://www.kindpng.com/userpngs/14556/) at [KindPng](https://www.kindpng.com/).
 
-------
 
-## FAQ about the uptime script
 
-**Why have you added this script?**
 
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
 
-**How will this affect me?**
-
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
-
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
-
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
-
-**So….?**
-
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
-
-**Can I opt out?**
-
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
-
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
-
-**Anything more?**
-
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
-
----
-
-Happy coding!
