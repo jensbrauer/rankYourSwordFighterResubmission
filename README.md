@@ -43,9 +43,9 @@ All tests and outcomes including bugs and fixes where documented seperatly and c
 ### Validator Testing 
 
 - Lighthouse reports can be accessed in docs file
-  - ![Landingpage](https://github.com/jensbrauer/rateYourSwordfighter/blob/main/docs/mockup.PNG)
-  - ![Rankingpage](https://github.com/jensbrauer/rateYourSwordfighter/blob/main/docs/mockup.PNG)
-  - ![Contributepage](https://github.com/jensbrauer/rateYourSwordfighter/blob/main/docs/mockup.PNG)
+  - ![Landingpage](https://github.com/jensbrauer/rateYourSwordfighter/blob/bda647795b9f06a478a4f9040c814f196e527d2a/docs/lighthouse/landing.PNG)
+  - ![Rankingpage](https://github.com/jensbrauer/rateYourSwordfighter/blob/bda647795b9f06a478a4f9040c814f196e527d2a/docs/lighthouse/ranking.PNG)
+  - ![Contributepage](https://github.com/jensbrauer/rateYourSwordfighter/blob/bda647795b9f06a478a4f9040c814f196e527d2a/docs/lighthouse/contribute.PNG)
 
 - HTML
   - [W3C validator](https://validator.w3.org/nu) returned no errors.
