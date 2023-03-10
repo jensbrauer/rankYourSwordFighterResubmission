@@ -6,6 +6,7 @@ from .models import Swordfighter, Comment, User
 from .forms import SwordfighterForm, CommentForm
 from django.db.models import Q
 from django.contrib import messages
+import re
 
 
 class Helper():
@@ -16,7 +17,6 @@ class Helper():
                     return False
         return True
 
-
     def user_permitted_to_update(self, request, swordfighter):
         if request.user.username == swordfighter.suggested_by:
             if swordfighter.status == 0 or swordfighter.status == 3:
@@ -25,7 +25,7 @@ class Helper():
         
     def user_permitted_to_delete(self, request, swordfighter):
         if request.user.username == swordfighter.suggested_by:
-            if swordfighter.status == 1 or swordfighter.status == 2:
+            if swordfighter.status == 0 or swordfighter.status == 3:
                 return True
         return False
 
@@ -48,6 +48,8 @@ class Helper():
             if swordfighter.upvotes.filter(id=current_user).exists():
                 upvoted_fighters.append(swordfighter.name)
         return upvoted_fighters
+
+
 
 
 class LandingPage(View):
@@ -230,6 +232,7 @@ class Contribute(View, Helper):
             messages.success(request, f"You successfully added {swordfighter.name}.")
         else:
             swordfighter_form = SwordfighterForm()
+            messages.error(request, f"The suggestion was not added, note that the name can only contain english letters.")
         
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
         render_suggestions = self.queryset_not_empty(suggestions)
@@ -268,7 +271,7 @@ class Delete_swordfighter(View, Helper):
 
     def post(self, request, slug):
         instance = Swordfighter.objects.get(slug=slug)
-        if not self.user_permitted_to_update(request, swordfighter):
+        if not self.user_permitted_to_update(request, instance):
             return render(
                 request,
                 '403.html'
@@ -300,6 +303,10 @@ class edit_swordfighter(View, Helper):
         swordfighter = Swordfighter.objects.get(slug=slug)
         if not self.user_permitted_to_update(request, swordfighter):
             return render(request,'403.html')
+        if not self.is_only_letters(swordfighter.name):
+            messages.danger(request, f"The name of a fighter can only include english letters.")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
         submit_form = SwordfighterForm(request.POST, request.FILES, instance=swordfighter)
         submit_form.save()
         messages.success(request, f"Your changes to {swordfighter.name}, have been saved.")
