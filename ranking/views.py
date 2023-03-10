@@ -303,13 +303,14 @@ class edit_swordfighter(View, Helper):
         swordfighter = Swordfighter.objects.get(slug=slug)
         if not self.user_permitted_to_update(request, swordfighter):
             return render(request,'403.html')
-        if not self.is_only_letters(swordfighter.name):
-            messages.danger(request, f"The name of a fighter can only include english letters.")
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         submit_form = SwordfighterForm(request.POST, request.FILES, instance=swordfighter)
-        submit_form.save()
-        messages.success(request, f"Your changes to {swordfighter.name}, have been saved.")
+        if submit_form.is_valid():
+            submit_form.save()
+            messages.success(request, f"Your changes to {swordfighter.name}, have been saved.")
+        else:
+            messages.error(request, f"NO CHANGES to {swordfighter.name}, try excluding special characters from the name.")
+        
         return redirect('contribute')
 
 
