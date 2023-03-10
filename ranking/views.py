@@ -22,6 +22,12 @@ class Helper():
             if swordfighter.status == 0 or swordfighter.status == 3:
                 return True
         return False
+        
+    def user_permitted_to_delete(self, request, swordfighter):
+        if request.user.username == swordfighter.suggested_by:
+            if swordfighter.status == 1 or swordfighter.status == 2:
+                return True
+        return False
 
 
     def queryset_not_empty(self, queryset):
@@ -228,7 +234,7 @@ class Contribute(View, Helper):
         suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
         render_suggestions = self.queryset_not_empty(suggestions)
         button_name = 'Submit'
-        
+
         return render(
             request,
             "contribute.html",
@@ -246,7 +252,7 @@ class Delete_swordfighter(View, Helper):
     def get(self, request, slug, *args, **kwargs):
         queryset = Swordfighter.objects
         swordfighter = get_object_or_404(queryset, slug=slug)
-        if not self.user_permitted_to_update(request, swordfighter):
+        if not self.user_permitted_to_delete(request, swordfighter):
             return render(
                 request,
                 '403.html'
