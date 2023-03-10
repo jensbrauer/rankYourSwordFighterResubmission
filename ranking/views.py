@@ -215,10 +215,7 @@ class Contribute(View, Helper):
         if not request.user.is_authenticated:
             return redirect(reverse('account_login'))
 
-        suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
-        render_suggestions = self.queryset_not_empty(suggestions)
         swordfighter_form = SwordfighterForm(request.POST, request.FILES)
-        button_name = 'Submit'
 
         if swordfighter_form.is_valid():
             swordfighter_form.instance.suggested_by = request.user.username
@@ -227,7 +224,11 @@ class Contribute(View, Helper):
             messages.success(request, f"You successfully added {swordfighter.name}.")
         else:
             swordfighter_form = SwordfighterForm()
-
+        
+        suggestions = Swordfighter.objects.filter(suggested_by=request.user.username)
+        render_suggestions = self.queryset_not_empty(suggestions)
+        button_name = 'Submit'
+        
         return render(
             request,
             "contribute.html",
